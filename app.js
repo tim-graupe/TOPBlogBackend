@@ -17,7 +17,7 @@ const corsOptions = {
 //mongoose
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-const mongoDB = process.MONGO_URI || process.dev_db_url;
+const mongoDB = process.dev_db_url || process.MONGO_URI;
 main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(mongoDB);
