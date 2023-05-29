@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const new_entry_controller = require("../controllers/newEntryController");
+const get_entries_controller = require("../controllers/getEntriesController");
 /* GET home page. */
 
 router.get("/", (req, res) => {
@@ -23,6 +24,9 @@ router.delete("/", (req, res) => {
 router.get("/new_entry", (req, res) => {
   return res.send("New entry");
 });
+
+//all entries
+router.get("/entries", get_entries_controller.allEntries);
 
 router.post("/new_entry", new_entry_controller.new_entry_post);
 module.exports = router;
