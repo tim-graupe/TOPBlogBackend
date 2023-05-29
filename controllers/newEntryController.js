@@ -4,7 +4,7 @@ const asyncHandler = require("express-async-handler");
 
 exports.new_entry_post = async (req, res) => {
   try {
-    const entry = await new Entry({
+    const entry = new Entry({
       title: req.body.title,
       content: req.body.content,
       // date_posted: Date.now()
