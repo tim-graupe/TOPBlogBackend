@@ -5,7 +5,7 @@ require("dotenv").config();
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
-var indexRouter = require("./routes/api");
+var router = require("./routes/api");
 const cors = require("cors");
 var app = express();
 
@@ -17,7 +17,7 @@ const corsOptions = {
 //mongoose
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-const mongoDB = process.MONGO_URI;
+const mongoDB = process.MONGO_URI || process.dev_db_url;
 main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(mongoDB);
@@ -30,7 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.options("*", cors(cors(corsOptions)));
 app.use("/api", cors(corsOptions), router);
-app.use("/", indexRouter);
+app.use("/", router);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
