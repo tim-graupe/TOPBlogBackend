@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.options("*", cors(cors(corsOptions)));
 app.use("/api", cors(corsOptions), router);
 app.use("/", router);
-
+app.use("/new_entry", router);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
