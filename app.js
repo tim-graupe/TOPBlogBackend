@@ -11,7 +11,9 @@ var app = express();
 
 //cors
 const corsOptions = {
-  origin: ["http://localhost:3000"],
+  origin: [
+    "http://localhost:3000, https://topblogbackend-production.up.railway.app/entries, https://topblogbackend-production.up.railway.app/",
+  ],
   optionSuccessStatus: 200,
 };
 //mongoose
