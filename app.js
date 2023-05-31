@@ -49,7 +49,7 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 7748;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}.`);
 });
