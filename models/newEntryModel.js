@@ -4,7 +4,7 @@ const { DateTime } = require("luxon");
 
 const EntrySchema = new Schema({
   title: { type: String, required: false, minLength: 1, maxLength: 24 },
-  entry: {
+  content: {
     type: String,
     // required: true,
     minLength: 1,
