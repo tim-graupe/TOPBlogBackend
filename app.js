@@ -30,8 +30,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cors());
 app.options("*", cors(cors(corsOptions)));
-app.use("/api", cors(corsOptions), router);
 app.use("/", router);
 app.use("/new_entry", router);
 // catch 404 and forward to error handler
