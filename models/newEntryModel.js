@@ -3,15 +3,16 @@ const Schema = mongoose.Schema;
 const { DateTime } = require("luxon");
 
 const EntrySchema = new Schema({
-  title: { type: String, required: false, minLength: 1, maxLength: 24 },
+  title: { type: String, required: true, minLength: 1, maxLength: 24 },
   content: {
     type: String,
-    // required: true,
+    required: true,
     minLength: 1,
     maxLength: 1000,
   },
   //   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   date_posted: { type: Date, default: new Date() },
+  isPublished: { type: Boolean, default: false },
 });
 
 EntrySchema.virtual("url").get(function () {
