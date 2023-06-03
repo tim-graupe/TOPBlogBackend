@@ -10,11 +10,11 @@ exports.allEntries = async function (req, res, next) {
   }
 };
 
-exports.singleEntry -
-  async function (req, res, next) {
-    try {
-      let entry = await Entries.find({ _id: req.params.postid });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+exports.singleEntry = async function (req, res, next) {
+  try {
+    let entry = await Entries.find({ _id: req.params.postid });
+    return res.status(200).json(entry);
+  } catch (error) {
+    console.log(error);
+  }
+};
