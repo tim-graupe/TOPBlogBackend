@@ -13,6 +13,7 @@ const EntrySchema = new Schema({
   //   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   date_posted: { type: Date, default: new Date() },
   isPublished: { type: Boolean, default: false },
+  replies: { type: Array },
 });
 
 EntrySchema.virtual("url").get(function () {
