@@ -1,6 +1,7 @@
 const { body, validationResult } = require("express-validator");
 const Entry = require("../models/newEntryModel");
 
+//get all
 exports.allEntries = async function (req, res, next) {
   try {
     const entries = await Entry.find().populate("title").exec();
@@ -9,7 +10,7 @@ exports.allEntries = async function (req, res, next) {
     return res.status(200).json({ message: "No entries found." });
   }
 };
-
+//get one
 exports.singleEntry = async function (req, res, next) {
   try {
     let entry = await Entries.find({ _id: req.params.postid });
@@ -17,4 +18,29 @@ exports.singleEntry = async function (req, res, next) {
   } catch (error) {
     console.log(error);
   }
+};
+
+//edit entry
+exports.editEntry = async function (req, res, next) {
+  try {
+    let entry = await Entries.findByIdAndUpdate({ _id: req.params.postid });
+    return res.status(200).json(entry);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//delete entry
+exports.deleteEntry = async (req, res, next) => {
+  const entry = await Entries.find().populate("title").exec();
+
+  Entries.findByIdAndRemove(entries, function (err, docs) {
+    if (err) {
+      console.log(err);
+      res.redirect("/");
+    } else {
+      console.log(entries + " removed...");
+      res.redirect("/");
+    }
+  });
 };

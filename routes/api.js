@@ -13,6 +13,7 @@ router.get("/", (req, res) => {
 router.get("/new_entry", (req, res) => {
   return res.send("New entry");
 });
+router.post("/new_entry", new_entry_controller.new_entry_post);
 
 //all entries
 router.get("/entries", get_entries_controller.allEntries);
@@ -20,5 +21,10 @@ router.get("/entries", get_entries_controller.allEntries);
 //single entry
 router.get(`/entries/:id`, get_entries_controller.singleEntry);
 
-router.post("/new_entry", new_entry_controller.new_entry_post);
+//edit entry
+router.put(`/entries/:id`, get_entries_controller.editEntry);
+
+//delete entry
+router.delete(`/entries/:id`, get_entries_controller.deleteEntry);
+
 module.exports = router;
