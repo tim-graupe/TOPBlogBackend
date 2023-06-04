@@ -23,7 +23,7 @@ exports.singleEntry = async function (req, res, next) {
 //edit entry
 exports.editEntry = async function (req, res, next) {
   try {
-    let entry = await Entries.findByIdAndUpdate({ _id: req.params._id });
+    let entry = await Entry.findByIdAndUpdate({ _id: req.params._id });
     return res.status(200).json(entry);
   } catch (error) {
     console.log(error);
@@ -32,9 +32,9 @@ exports.editEntry = async function (req, res, next) {
 
 //delete entry
 exports.deleteEntry = async (req, res, next) => {
-  const entries = await Entries.find().populate("title").exec();
+  const entries = await Entry.find().populate("title").exec();
 
-  Entries.findByIdAndRemove(entries, function (err, docs) {
+  Entry.findByIdAndRemove(entries, function (err, docs) {
     if (err) {
       console.log(err);
       res.redirect("/");
