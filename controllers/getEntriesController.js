@@ -4,8 +4,8 @@ const Entry = require("../models/newEntryModel");
 //get all
 exports.allEntries = async function (req, res, next) {
   try {
-    const entries = await Entry.find().populate("title").exec();
-    return res.status(200).json(entries);
+    const entry = await Entry.find().populate("title").exec();
+    return res.status(200).json(entry);
   } catch (err) {
     return res.status(200).json({ message: "No entries found." });
   }
@@ -13,7 +13,7 @@ exports.allEntries = async function (req, res, next) {
 //get one
 exports.singleEntry = async function (req, res, next) {
   try {
-    let entry = await Entry.find({ _id: req.params._id });
+    let entry = await Entry.find({ _id: req.params.id });
     return res.status(200).json(entry);
   } catch (error) {
     console.log(error);
@@ -23,7 +23,7 @@ exports.singleEntry = async function (req, res, next) {
 //edit entry
 exports.editEntry = async function (req, res, next) {
   try {
-    let entry = await Entry.findByIdAndUpdate({ _id: req.params._id });
+    let entry = await Entry.findByIdAndUpdate({ _id: req.params.id });
     return res.status(200).json(entry);
   } catch (error) {
     console.log(error);
@@ -32,14 +32,14 @@ exports.editEntry = async function (req, res, next) {
 
 //delete entry
 exports.deleteEntry = async (req, res, next) => {
-  const entries = await Entry.find().populate("title").exec();
+  const entry = await Entry.find().populate("title").exec();
 
-  Entry.findByIdAndRemove(entries, function (err, docs) {
+  Entry.findByIdAndRemove(entry, function (err, docs) {
     if (err) {
       console.log(err);
       res.redirect("/");
     } else {
-      console.log(entries + " removed...");
+      console.log(entry + " removed...");
       res.redirect("/");
     }
   });
