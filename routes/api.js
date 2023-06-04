@@ -19,12 +19,12 @@ router.post("/new_entry", new_entry_controller.new_entry_post);
 router.get("/entries", get_entries_controller.allEntries);
 
 //single entry
-router.get(`/entries/:id`, get_entries_controller.singleEntry);
+router.get("/entries/:id", get_entries_controller.singleEntry);
 
 //edit entry
-router.put(`/entries/:id`, get_entries_controller.editEntry);
+router.put("/entries/:id", get_entries_controller.editEntry);
 
 //delete entry
-router.delete(`/entries/:id`, get_entries_controller.deleteEntry);
+router.delete("/entries/:id", get_entries_controller.deleteEntry);
 
 module.exports = router;
