@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const cors = require("cors");
+const app = express();
 const new_entry_controller = require("../controllers/newEntryController");
 const get_entries_controller = require("../controllers/getEntriesController");
 /* GET home page. */
