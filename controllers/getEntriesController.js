@@ -13,7 +13,7 @@ exports.allEntries = async function (req, res, next) {
 //get one
 exports.singleEntry = async function (req, res, next) {
   try {
-    let entry = await Entries.find({ _id: req.params._id });
+    let entry = await Entry.find({ _id: req.params._id });
     return res.status(200).json(entry);
   } catch (error) {
     console.log(error);
