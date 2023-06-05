@@ -38,6 +38,6 @@ exports.deleteEntry = async (req, res, next) => {
       .status(404)
       .json({ err: `No posts with id ${req.params.postid} exists` });
   }
-  res.status(200).json({ message: `Entry ${req.params.id} deleted!` });
+  res.status(200).json(entry);
   //switched from findByIdAndRemove
 };
