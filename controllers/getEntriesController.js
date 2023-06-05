@@ -31,8 +31,8 @@ exports.editEntry = async function (req, res, next) {
 };
 
 //delete entry
-exports.deleteEntry = async (req, res, next) => {
-  Entry.remove({ _id: req.params.id });
-  res.status(200).json(entry);
+exports.deleteEntry = (req, res, next) => {
+  Entry.findByIdAndRemove({ _id: req.params.id });
+  res.status(200).json(Entry);
   //switched from findByIdAndRemove
 };
