@@ -26,6 +26,6 @@ router.get("/entries/:id", get_entries_controller.singleEntry);
 router.put("/entries/:id", get_entries_controller.editEntry);
 
 //delete entry
-router.delete("/entries/", get_entries_controller.deleteEntry);
+router.delete("/entries/:id", get_entries_controller.deleteEntry);
 
 module.exports = router;
