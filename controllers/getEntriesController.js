@@ -32,7 +32,7 @@ exports.editEntry = async function (req, res, next) {
 
 //delete entry
 exports.deleteEntry = async (req, res, next) => {
-  const entry = await Entry.remove(req.params.id);
+  const entry = await Entry.remove({ _id: req.params.id });
   if (!entry) {
     return res
       .status(404)
