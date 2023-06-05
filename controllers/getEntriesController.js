@@ -32,7 +32,16 @@ exports.editEntry = async function (req, res, next) {
 
 //delete entry
 exports.deleteEntry = (req, res, next) => {
-  Entry.findByIdAndDelete({ id: req.params.id });
-  res.status(200).json(Entry);
-  //switched from findByIdAndRemove
+  Entry.findByIdAndDelete(req.params.id)
+    .then((entries) => {
+      if (!entries) {
+        return res.status(404).send();
+      }
+      res.send(entries);
+    })
+    .catch((error) => {
+      {
+        res.status(500).send(error);
+      }
+    });
 };
