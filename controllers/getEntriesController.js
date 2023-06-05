@@ -32,12 +32,7 @@ exports.editEntry = async function (req, res, next) {
 
 //delete entry
 exports.deleteEntry = async (req, res, next) => {
-  const entry = await Entry.remove({ _id: req.params.id });
-  if (!entry) {
-    return res
-      .status(404)
-      .json({ err: `No posts with id ${req.params.id} exists` });
-  }
+  Entry.remove({ _id: req.params.id });
   res.status(200).json(entry);
   //switched from findByIdAndRemove
 };
