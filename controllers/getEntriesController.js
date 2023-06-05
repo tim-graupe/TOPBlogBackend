@@ -21,19 +21,17 @@ exports.singleEntry = async function (req, res, next) {
 };
 
 //edit entry
-exports.editEntry = (req, res, next) => {
-  Entry.findByIdAndUpdate(req.params.id)
-    .then((entries) => {
-      if (!entries) {
-        return res.status(404).send();
-      }
-      res.send(entries);
-    })
-    .catch((error) => {
-      {
-        res.status(500).send(error);
-      }
+exports.editEntry = async function (req, res, next) {
+  try {
+    let entry = await Entry.findByIdAndUpdate(req.params.id, {
+      title: req.body.title,
+      content: req.body.content,
+      isPublished: req.body.isPublished,
     });
+    return res.status(200).json(entry);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 //delete entry
