@@ -23,7 +23,7 @@ exports.singleEntry = async function (req, res, next) {
 //edit entry
 exports.editEntry = async function (req, res, next) {
   try {
-    let entry = await Entry.findByIdAndUpdate({ _id: req.params.id });
+    let entry = await Entry.findByIdAndUpdate(req.params.id);
     return res.status(200).json(entry);
   } catch (error) {
     console.log(error);
