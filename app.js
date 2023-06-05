@@ -32,12 +32,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 app.options("*", cors(cors(corsOptions)));
+app.use("/", router);
+app.use("/entries", router);
+app.use("/new_entry", router);
 
 app.delete("/entries/:id", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
 });
-app.use("/", router);
-app.use("/new_entry", router);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
