@@ -39,6 +39,10 @@ app.use("/new_entry", router);
 app.delete("/entries/:id", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
 });
+
+app.put("/entries/:id", cors(), function (req, res, next) {
+  res.json({ msg: "cors enabled, for all origins!" });
+});
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
