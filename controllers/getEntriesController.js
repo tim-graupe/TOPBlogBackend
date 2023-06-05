@@ -32,14 +32,12 @@ exports.editEntry = async function (req, res, next) {
 
 //delete entry
 exports.deleteEntry = async (req, res, next) => {
-  const entry = await Entry.findByIdAndRemove(req.params.id);
-  //switched from findByIdAndRemove
-
-  if (err) {
-    console.log(err);
-    res.redirect("/");
-  } else {
-    console.log(entry + " removed...");
-    res.redirect("/");
+  const entry = await Entry.findByIdAndRemove({ _id: req.params.id });
+  if (!entry) {
+    return res
+      .status(404)
+      .json({ err: `No posts with id ${req.params.postid} exists` });
   }
+  res.status(200).json({ message: `Entry ${req.params.id} deleted!` });
+  //switched from findByIdAndRemove
 };
