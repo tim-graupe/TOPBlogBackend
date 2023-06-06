@@ -1,5 +1,6 @@
 const { body, validationResult } = require("express-validator");
 const Entry = require("../models/newEntryModel");
+const Reply = require("../models/newReplySchema");
 
 //get all
 exports.allEntries = async function (req, res, next) {
@@ -55,8 +56,8 @@ exports.addReply = async function (req, res, next) {
     let entry = await Entry.findByIdAndUpdate(req.params.id, {
       $push: {
         replies: {
-          user: req.body.user,
-          content: req.body.content,
+          user: "req.body.user",
+          content: "req.body.content",
           date_replied: new Date(),
         },
       },
