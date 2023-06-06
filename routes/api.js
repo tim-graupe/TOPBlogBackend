@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 const new_entry_controller = require("../controllers/newEntryController");
 const get_entries_controller = require("../controllers/getEntriesController");
-const { sign_up_controller } = require("../controllers/signupController");
+const sign_up_controller = require("../controllers/signupController");
 /* GET home page. */
 
 router.get("/", (req, res) => {
