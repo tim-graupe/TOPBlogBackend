@@ -7,7 +7,7 @@ exports.sign_up = async (req, res, next) => {
       username: req.body.username,
       password: req.body.password,
       adminCode: req.body.adminCode,
-      isAdmnin: req.body.password === process.env.passcode ? true : false,
+      isAdmin: req.body.adminCode === process.env.passcode ? true : false,
     });
     const result = await user.save();
   } catch (err) {
