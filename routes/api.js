@@ -30,6 +30,9 @@ router.put("/entries/:id", get_entries_controller.editEntry);
 router.delete("/entries/:id", get_entries_controller.deleteEntry);
 
 //sign up
-router.get("/signup", sign_up_controller.sign_up);
+router.get("/sign_up", (req, res) => {
+  return res.send("GET HTTP method on sign up");
+});
+router.post("/sign_up", sign_up_controller.sign_up);
 
 module.exports = router;
