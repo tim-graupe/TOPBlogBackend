@@ -4,6 +4,7 @@ const cors = require("cors");
 const app = express();
 const new_entry_controller = require("../controllers/newEntryController");
 const get_entries_controller = require("../controllers/getEntriesController");
+const { sign_up_controller } = require("../controllers/signupController");
 /* GET home page. */
 
 router.get("/", (req, res) => {
@@ -29,6 +30,6 @@ router.put("/entries/:id", get_entries_controller.editEntry);
 router.delete("/entries/:id", get_entries_controller.deleteEntry);
 
 //sign up
-router.get("/signup");
+router.get("/signup", sign_up_controller.sign_up);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const { body, validationResult } = require("express-validator");
 const User = require("../models/newUserModel");
 
-exports.sign_up_controller = async (req, res, next) => {
+exports.sign_up = async (req, res, next) => {
   try {
     const user = new User({
       username: req.body.username,
