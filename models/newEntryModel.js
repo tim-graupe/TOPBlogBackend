@@ -11,7 +11,7 @@ const EntrySchema = new Schema({
     maxLength: 1000,
   },
   //   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  date_posted: { type: Date, default: new Date() },
+  date_posted: { type: Date, default: Date.now },
   isPublished: { type: Boolean, default: false },
   replies: { type: Array },
 });
