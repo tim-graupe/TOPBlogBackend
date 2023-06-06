@@ -56,8 +56,8 @@ exports.addReply = async function (req, res, next) {
     let entry = await Entry.findByIdAndUpdate(req.params.id, {
       $push: {
         replies: {
-          user: "req.body.user",
-          content: "req.body.content",
+          user: req.body.user,
+          content: req.body.content,
           date_replied: new Date(),
         },
       },
