@@ -30,7 +30,7 @@ router.put("/entries/:id", get_entries_controller.editEntry);
 router.delete("/entries/:id", get_entries_controller.deleteEntry);
 
 //add reply
-router.put("/entries/:id", get_entries_controller.addReply);
+router.post("/entries/:id", get_entries_controller.addReply);
 
 //sign up
 router.get("/sign_up", (req, res) => {
