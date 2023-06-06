@@ -29,6 +29,9 @@ router.put("/entries/:id", get_entries_controller.editEntry);
 //delete entry
 router.delete("/entries/:id", get_entries_controller.deleteEntry);
 
+//add reply
+router.put("/entries/:id", get_entries_controller.addReply);
+
 //sign up
 router.get("/sign_up", (req, res) => {
   return res.send("GET HTTP method on sign up");

@@ -34,7 +34,6 @@ exports.editEntry = async function (req, res, next) {
     console.log(error);
   }
 };
-
 //delete entry
 exports.deleteEntry = (req, res, next) => {
   Entry.findByIdAndDelete(req.params.id)
@@ -49,4 +48,21 @@ exports.deleteEntry = (req, res, next) => {
         res.status(500).send(error);
       }
     });
+};
+
+exports.addReply = async function (req, res, next) {
+  try {
+    let entry = await Entry.findByIdAndUpdate(req.params.id, {
+      $push: {
+        replies: {
+          user: req.body.replyUser,
+          content: req.body.replyContent,
+          date_replied: new Date(),
+        },
+      },
+    });
+    return res.status(200).json(entry);
+  } catch (error) {
+    console.log(error);
+  }
 };
