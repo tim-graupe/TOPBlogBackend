@@ -1,13 +1,15 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
+const createError = require("http-errors");
+const express = require("express");
+const path = require("path");
 require("dotenv").config();
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-
-var router = require("./routes/api");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const session = require("express-session");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const router = require("./routes/api");
 const cors = require("cors");
-var app = express();
+const app = express();
 
 //cors
 const corsOptions = {
@@ -35,6 +37,12 @@ app.options("*", cors(cors(corsOptions)));
 app.use("/", router);
 app.use("/entries", router);
 app.use("/new_entry", router);
+app.use("/signup", router);
+
+//passport
+app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.delete("/entries/:id", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });

@@ -28,4 +28,7 @@ router.put("/entries/:id", get_entries_controller.editEntry);
 //delete entry
 router.delete("/entries/:id", get_entries_controller.deleteEntry);
 
+//sign up
+router.get("/signup");
+
 module.exports = router;
