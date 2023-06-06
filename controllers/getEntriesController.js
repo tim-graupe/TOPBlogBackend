@@ -10,6 +10,7 @@ exports.allEntries = async function (req, res, next) {
     return res.status(200).json({ message: "No entries found." });
   }
 };
+
 //get one
 exports.singleEntry = async function (req, res, next) {
   try {
