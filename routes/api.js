@@ -4,11 +4,11 @@ const cors = require("cors");
 const app = express();
 const new_entry_controller = require("../controllers/newEntryController");
 const get_entries_controller = require("../controllers/getEntriesController");
-const sign_up_controller = require("../controllers/signupController");
+const auth_controller = require("../controllers/authController");
 /* GET home page. */
 
 router.get("/", (req, res) => {
-  return res.send("GET HTTP method on user resource");
+  return res.send("GET HTTP method on user resource", { user: req.user });
 });
 
 //new entry
@@ -36,6 +36,8 @@ router.post("/entries/:id", get_entries_controller.addReply);
 router.get("/sign_up", (req, res) => {
   return res.send("GET HTTP method on sign up");
 });
-router.post("/sign_up", sign_up_controller.sign_up_controller);
+router.post("/sign_up", auth_controller.sign_up_controller);
 
+//need to add login controller
+router.get("/log-in", (req, res));
 module.exports = router;
