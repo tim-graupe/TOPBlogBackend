@@ -7,8 +7,9 @@ exports.new_entry_post = async (req, res) => {
     const entry = new Entry({
       title: req.body.title,
       content: req.body.content,
-      date_posted: Date.now(),
-      isPublished: req.body.isPublished
+      date_posted: req.body.date_posted,
+      isPublished: req.body.isPublished,
+      replies: [],
     });
     entry.save();
     console.log(entry);
