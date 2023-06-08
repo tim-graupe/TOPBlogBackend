@@ -1,5 +1,6 @@
 const { body, validationResult } = require("express-validator");
 const User = require("../models/newUserModel");
+const bcrypt = require("bcrypt");
 
 exports.sign_up_controller = async (req, res, next) => [
   body("username", "Username required!")
@@ -19,8 +20,7 @@ exports.sign_up_controller = async (req, res, next) => [
     const user = new User({
       username: req.body.username,
       password: req.body.password,
-      admin: req.body.admin,
-      member: req.body.member ? true : false,
+      adminCode: req.body.adminCode,
     });
     bcrypt.hash(req.body.password, 10, (err, hashedPwd) => {
       if (err) return next(err);
@@ -37,5 +37,3 @@ exports.login_get = (req, res) => {
   // If user is already logged in, redirect them to the homepage
   if (res.locals.currentUser) return res.redirect("/");
 };
-
-exports.login_controller = async (req, res, next) => {};
