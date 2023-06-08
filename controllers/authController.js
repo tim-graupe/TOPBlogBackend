@@ -1,18 +1,43 @@
 const { body, validationResult } = require("express-validator");
 const User = require("../models/newUserModel");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 exports.sign_up_controller = async (req, res, next) => {
   try {
-    bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
-      const user = new User({
+    const errors = validationResult(req);
+    let desiredName = await User.findOne({ username: req.body.username });
+    if (desiredName) {
+      return res.render("signup", { userError: "User Already Exists" });
+    }
+    if (!errors.isEmpty() && !desiredName) {
+      res.render("signup", {
         username: req.body.username,
         password: req.body.password,
-        adminCode: req.body.adminCode,
+        admin: req.body.admin,
+        member: req.body.member ? true : false,
       });
-      const result = await user.save();
-      res.redirect("/");
+      return;
+    }
+    const user = new User({
+      username: req.body.username,
+      password: req.body.password,
+      admin: req.body.admin,
+      member: req.body.member ? true : false,
     });
+    bcrypt.hash(req.body.password, 10, (err, hashedPwd) => {
+      if (err) return next(err);
+      user.password = hashedPwd;
+      user.save((err) => {
+        if (err) return next(err);
+        res.redirect("/");
+      });
+    });
+    // user.save((err) => {
+    //   if (err) {
+    //     return next(err);
+    //   }
+    //   res.redirect("/");
+    // });
   } catch (err) {
     return next(err);
   }
