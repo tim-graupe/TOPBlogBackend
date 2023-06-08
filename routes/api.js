@@ -39,5 +39,5 @@ router.get("/sign_up", (req, res) => {
 router.post("/sign_up", auth_controller.sign_up_controller);
 
 //need to add login controller
-// router.get("/log-in", (req, res));
+router.get("/", auth_controller.login_get);
 module.exports = router;
