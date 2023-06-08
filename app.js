@@ -38,7 +38,7 @@ app.options("*", cors(cors(corsOptions)));
 app.use("/", router);
 app.use("/entries", router);
 app.use("/new_entry", router);
-app.use("/signup", router);
+app.use("/sign_up", router);
 
 //passport
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
