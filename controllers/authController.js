@@ -1,6 +1,6 @@
 const { body, validationResult } = require("express-validator");
 const User = require("../models/newUserModel");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 exports.sign_up_controller = async (req, res, next) => {
   try {
