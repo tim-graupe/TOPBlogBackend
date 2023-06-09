@@ -23,12 +23,17 @@ exports.sign_up_controller = [
       adminCode: req.body.adminCode,
     });
     bcrypt.hash(req.body.password, 10, (err, hashedPwd) => {
-      if (err) return next(err);
-      user.password = hashedPwd;
-      user.save((err) => {
-        if (err) return next(err);
-        res.redirect("/");
-      });
+      try {
+        user.save();
+      } catch (err) {
+        console.log("error found, " + err);
+      }
+      // if (err) return next(err);
+      // user.password = hashedPwd;
+      // user.save((err) => {
+      //   if (err) return next(err);
+      //   res.redirect("/");
+      // });
     });
     // user.save((err) => {
     //   if (err) {
