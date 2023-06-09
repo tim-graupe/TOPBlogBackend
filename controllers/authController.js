@@ -2,7 +2,7 @@ const { body, validationResult } = require("express-validator");
 const User = require("../models/newUserModel");
 const bcrypt = require("bcrypt");
 
-exports.sign_up_controller = async (req, res, next) => [
+exports.sign_up_controller = [
   body("username", "Username required!")
     .trim()
     .isLength({ min: 2, max: 24 })
@@ -12,24 +12,30 @@ exports.sign_up_controller = async (req, res, next) => [
     const errors = validationResult(req);
     let desiredName = await User.findOne({ username: req.body.username });
     if (desiredName) {
-      alert("User Already Exists");
+      console.log("User Already Exists");
     }
     if (!errors.isEmpty() && !desiredName) {
       return;
     }
-
+    const user = new User({
+      username: req.body.username,
+      password: req.body.password,
+      adminCode: req.body.adminCode,
+    });
     bcrypt.hash(req.body.password, 10, (err, hashedPwd) => {
-      const user = new User({
-        username: req.body.username,
-        password: hashedPwd,
-        adminCode: req.body.adminCode,
+      if (err) return next(err);
+      user.password = hashedPwd;
+      user.save((err) => {
+        if (err) return next(err);
+        res.redirect("/");
       });
-      if (err) return next(err);
     });
-    user.save((err) => {
-      if (err) return next(err);
-      res.redirect("/");
-    });
+    // user.save((err) => {
+    //   if (err) {
+    //     return next(err);
+    //   }
+    //   res.redirect("/");
+    // });
   },
 ];
 
