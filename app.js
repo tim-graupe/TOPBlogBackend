@@ -39,7 +39,7 @@ app.use("/", router);
 app.use("/entries", router);
 app.use("/new_entry", router);
 app.use("/sign_up", router);
-app.use("log-in", router);
+app.use("/log-in", router);
 
 //passport
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
