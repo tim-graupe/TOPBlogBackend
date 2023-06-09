@@ -24,6 +24,7 @@ exports.sign_up_controller = [
     });
     bcrypt.hash(req.body.password, 10, (err, hashedPwd) => {
       try {
+        user.password = hashedPwd;
         user.save();
       } catch (err) {
         console.log("error found, " + err);
