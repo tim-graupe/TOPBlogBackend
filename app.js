@@ -78,6 +78,11 @@ passport.deserializeUser(async function (id, done) {
     done(err);
   }
 });
+app.use(function (req, res, next) {
+  res.locals.isLoggedIn = req.isAuthenticated();
+  res.locals.currentUser = req.user;
+  next();
+});
 
 app.get("/log-out", (req, res, next) => {
   req.logout(function (err) {
@@ -86,11 +91,6 @@ app.get("/log-out", (req, res, next) => {
     }
     res.redirect("/");
   });
-});
-
-app.use(function (req, res, next) {
-  res.locals.currentUser = req.user;
-  next();
 });
 
 app.post("/sign_up", cors(), function (req, res, next) {

@@ -1,7 +1,7 @@
 const { body, validationResult } = require("express-validator");
 const User = require("../models/newUserModel");
-const bcrypt = require("bcrypt");
-
+const bcrypt = require("bcryptjs");
+const passport = require("passport");
 exports.sign_up_controller = [
   body("username", "Username required!")
     .trim()
@@ -46,7 +46,10 @@ exports.sign_up_controller = [
   },
 ];
 
-exports.login_get = (req, res) => {
-  // If user is already logged in, redirect them to the homepage
-  if (res.locals.currentUser) return res.redirect("/");
+exports.login_controller = async function (req, res, next) {
+  "/login",
+    passport.authenticate("local", {
+      successRedirect: "/",
+      failureRedirect: "/login",
+    });
 };
