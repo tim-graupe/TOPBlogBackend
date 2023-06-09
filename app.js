@@ -100,6 +100,9 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.post("/sign_up", cors(), function (req, res, next) {
+  res.json({ msg: "cors enabled, for all origins!" });
+});
 app.delete("/entries/:id", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
 });
