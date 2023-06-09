@@ -25,11 +25,10 @@ exports.sign_up_controller = async (req, res, next) => [
         adminCode: req.body.adminCode,
       });
       if (err) return next(err);
-      user.password = hashedPwd;
-      user.save((err) => {
-        if (err) return next(err);
-        res.redirect("/");
-      });
+    });
+    user.save((err) => {
+      if (err) return next(err);
+      res.redirect("/");
     });
   },
 ];
