@@ -13,6 +13,7 @@ exports.sign_up_controller = [
     let desiredName = await User.findOne({ username: req.body.username });
     if (desiredName) {
       console.log("User Already Exists");
+      return;
     }
     if (!errors.isEmpty() && !desiredName) {
       return;

@@ -78,14 +78,6 @@ passport.deserializeUser(async function (id, done) {
   }
 });
 
-app.post(
-  "/log-in",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/",
-  })
-);
-
 app.get("/log-out", (req, res, next) => {
   req.logout(function (err) {
     if (err) {

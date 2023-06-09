@@ -1,10 +1,10 @@
 var express = require("express");
 var router = express.Router();
-const cors = require("cors");
-const app = express();
+const passport = require("passport");
 const new_entry_controller = require("../controllers/newEntryController");
 const get_entries_controller = require("../controllers/getEntriesController");
 const auth_controller = require("../controllers/authController");
+
 /* GET home page. */
 
 router.get("/", (req, res) => {
@@ -39,5 +39,12 @@ router.get("/sign_up", (req, res) => {
 router.post("/sign_up", auth_controller.sign_up_controller);
 
 //need to add login controller
-router.get("/", auth_controller.login_get);
+router.post(
+  "/log-in",
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/",
+  })
+);
+
 module.exports = router;
