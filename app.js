@@ -39,6 +39,7 @@ app.use("/", router);
 app.use("/entries", router);
 app.use("/new_entry", router);
 app.use("/sign_up", router);
+app.use("log-in", router);
 
 //passport
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
@@ -100,6 +101,10 @@ app.delete("/entries/:id", cors(), function (req, res, next) {
 });
 
 app.put("/entries/:id", cors(), function (req, res, next) {
+  res.json({ msg: "cors enabled, for all origins!" });
+});
+
+app.post("/log-in", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
 });
 // catch 404 and forward to error handler
