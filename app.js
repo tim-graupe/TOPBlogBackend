@@ -110,7 +110,7 @@ app.put("/entries/:id", cors(), function (req, res, next) {
 });
 
 app.post("/log-in", cors(), function (req, res, next) {
-  res.json({ msg: "cors enabled, for all origins!" });
+  res.json({ msg: "cors enabled, for login origins!" });
 });
 
 app.use(function (req, res, next) {

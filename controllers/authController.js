@@ -63,7 +63,6 @@ exports.login_controller = async function (req, res, next) {
     });
     jwt.sign(
       { _id: user._id, username: user.username },
-      process.env.SECRET,
       { expiresIn: "10m" },
       (err, token) => {
         if (err) return res.status(400).json(err);
