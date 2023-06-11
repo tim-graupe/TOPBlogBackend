@@ -40,12 +40,6 @@ router.post("/sign_up", auth_controller.sign_up_controller);
 
 //login
 router.get("/log-in", auth_controller.login_get);
-router.post("/log-in", auth_controller.login_controller);
-router.post(
-  "/log-in",
-  passport.autenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-  })
-);
+router.post("/log-in", auth_controller.login_post);
+
 module.exports = router;

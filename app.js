@@ -6,7 +6,6 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const session = require("express-session");
-const SQLiteStore = require("connect-sqlite3")(session);
 const User = require("./models/newUserModel");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
@@ -17,7 +16,7 @@ const app = express();
 //cors
 const corsOptions = {
   origin: [
-    "http://localhost:3000, https://topblogbackend-production.up.railway.app/entries, https://topblogbackend-production.up.railway.app/login, https://topblogbackend-production.up.railway.app/",
+    "http://localhost:3000, https://topblogbackend-production.up.railway.app/entries, https://topblogbackend-production.up.railway.app/",
   ],
   optionSuccessStatus: 200,
 };
@@ -43,19 +42,12 @@ app.use("/sign_up", router);
 app.use("/log-in", router);
 
 //passport
-app.use(
-  session({
-    secret: "keyboard cat",
-    resave: false,
-    saveUninitialized: false,
-    store: new SQLiteStore({ db: "sessions.db", dir: "./var/db" }),
-  })
-);
-app.use(passport.authenticate("session"));
+app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
+//passport
 passport.use(
   new LocalStrategy(function (username, password, done) {
     User.findOne({ username: username }, function (err, user) {
@@ -92,6 +84,14 @@ passport.deserializeUser(async function (id, done) {
     done(err);
   }
 });
+
+app.post(
+  "/login",
+  passport.authenticate("local", { failureRedirect: "/signup" }),
+  function (req, res) {
+    res.redirect("/");
+  }
+);
 app.use(function (req, res, next) {
   res.locals.isLoggedIn = req.isAuthenticated();
   res.locals.currentUser = req.user;
@@ -118,17 +118,8 @@ app.put("/entries/:id", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
 });
 
-// app.get("/log-in", cors(), function (req, res, next) {
-//   res.json({ msg: "cors enabled, for login origins!" });
-// });
-
 app.post("/log-in", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for login origins!" });
-});
-
-app.use(function (req, res, next) {
-  res.locals.currentUser = req.user;
-  next();
 });
 
 // catch 404 and forward to error handler
