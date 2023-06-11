@@ -17,7 +17,7 @@ const app = express();
 //cors
 const corsOptions = {
   origin: [
-    "http://localhost:3000, https://topblogbackend-production.up.railway.app/entries, https://topblogbackend-production.up.railway.app/",
+    "http://localhost:3000, https://topblogbackend-production.up.railway.app/entries, https://topblogbackend-production.up.railway.app/login, https://topblogbackend-production.up.railway.app/",
   ],
   optionSuccessStatus: 200,
 };
