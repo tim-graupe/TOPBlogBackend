@@ -40,7 +40,7 @@ router.post("/sign_up", auth_controller.sign_up_controller);
 
 //login
 router.get("/log-in", (req, res) => {
-  return res.send("GET HTTP method on sign up");
+  return res.send("GET HTTP method on login");
 });
 router.post("/log-in", auth_controller.login_post);
 

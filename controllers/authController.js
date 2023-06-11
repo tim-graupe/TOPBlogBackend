@@ -52,7 +52,7 @@ exports.login_get = (req, res) => {
 };
 exports.login_post = async function (req, res, next) {
   passport.authenticate("local", { session: false }, (err, user) => {
-    bcrypt.compare(password, user.password, (err, res) => {
+    bcrypt.compare(req.password, user.password, (err, res) => {
       if (res) {
         // passwords match! log user in
         return done(null, user);
