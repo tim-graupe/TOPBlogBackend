@@ -46,6 +46,9 @@ exports.sign_up_controller = [
   },
 ];
 
+exports.login_get = (req, res) => {
+  if (res.locals.currentUser) return res.redirect("/");
+};
 exports.login_controller = async function (req, res, next) {
   "/log-in",
     passport.authenticate("local", {

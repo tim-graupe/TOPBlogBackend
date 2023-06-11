@@ -48,9 +48,14 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
 passport.use(
-  new LocalStrategy(async (username, password, done) => {
-    try {
-      const user = await User.findOne({ username: username });
+  new LocalStrategy(function (username, password, done) {
+    User.findOne({ username: username }, function (err, user) {
+      if (err) {
+        return done(err);
+      }
+      if (!user) {
+        return done(null, false);
+      }
       bcrypt.compare(password, user.password, (err, res) => {
         if (res) {
           // passwords match! log user in
@@ -60,9 +65,9 @@ passport.use(
           return done(null, false, { message: "Incorrect password" });
         }
       });
-    } catch (err) {
-      return done(err);
-    }
+
+      return done(null, user);
+    });
   })
 );
 
@@ -107,6 +112,12 @@ app.put("/entries/:id", cors(), function (req, res, next) {
 app.post("/log-in", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
 });
+
+app.use(function (req, res, next) {
+  res.locals.currentUser = req.user;
+  next();
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
