@@ -2,6 +2,7 @@ const { body, validationResult } = require("express-validator");
 const User = require("../models/newUserModel");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
+const jwt = require("jsonwebtoken");
 exports.sign_up_controller = [
   body("username", "Username required!")
     .trim()
@@ -50,9 +51,24 @@ exports.login_get = (req, res) => {
   if (res.locals.currentUser) return res.redirect("/");
 };
 exports.login_controller = async function (req, res, next) {
-  "/log-in",
-    passport.authenticate("local", {
-      successRedirect: "/",
-      failureRedirect: "/log-in",
-    });
+  passport.authenticate("local", { session: false }, (err, user) => {
+    if (err || !user) {
+      return res.status(401).json({
+        message: "Incorrect Username or Password",
+        user,
+      });
+    }
+    jwt.sign(
+      { _id: user._id, username: user.username },
+      process.env.SECRET,
+      { expiresIn: "10m" },
+      (err, token) => {
+        if (err) return res.status(400).json(err);
+        res.json({
+          token: token,
+          user: { _id: user._id, username: user.username },
+        });
+      }
+    );
+  })(req, res);
 };

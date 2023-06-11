@@ -23,6 +23,7 @@
     "express-validator": "^7.0.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "jsonwebtoken": "^9.0.0",
     "luxon": "^3.3.0",
     "mongoose": "^7.2.1",
     "mongosh": "^1.9.1",
