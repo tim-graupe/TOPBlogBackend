@@ -38,8 +38,14 @@ router.get("/sign_up", (req, res) => {
 });
 router.post("/sign_up", auth_controller.sign_up_controller);
 
-//need to add login controller
+//login
 router.get("/log-in", auth_controller.login_get);
 router.post("/log-in", auth_controller.login_controller);
-
+router.post(
+  "/log-in",
+  passport.autenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+  })
+);
 module.exports = router;

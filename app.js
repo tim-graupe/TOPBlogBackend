@@ -6,6 +6,7 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const session = require("express-session");
+const SQLiteStore = require("connect-sqlite3")(session);
 const User = require("./models/newUserModel");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
@@ -42,7 +43,15 @@ app.use("/sign_up", router);
 app.use("/log-in", router);
 
 //passport
-app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: false,
+    store: new SQLiteStore({ db: "sessions.db", dir: "./var/db" }),
+  })
+);
+app.use(passport.authenticate("session"));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
@@ -109,9 +118,9 @@ app.put("/entries/:id", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
 });
 
-app.get("/log-in", cors(), function (req, res, next) {
-  res.json({ msg: "cors enabled, for login origins!" });
-});
+// app.get("/log-in", cors(), function (req, res, next) {
+//   res.json({ msg: "cors enabled, for login origins!" });
+// });
 
 app.post("/log-in", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for login origins!" });

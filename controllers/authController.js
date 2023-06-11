@@ -48,29 +48,47 @@ exports.sign_up_controller = [
 ];
 
 exports.login_get = (req, res) => {
-  if (res.locals.currentUser) return res.redirect("/");
+  res.json({ msg: "cors enabled, for login origins!" });
+  // if (res.locals.currentUser) return res.redirect("/");
 };
 exports.login_controller = async function (req, res, next) {
-  passport.authenticate("local", { session: false }, (err, user) => {
-    bcrypt.compare(password, user.password, (err, res) => {
-      if (res) {
-        // passwords match! log user in
-        return done(null, user);
-      } else {
-        // passwords do not match!
-        return done(null, false, { message: "Incorrect password" });
-      }
-    });
-    // jwt.sign(
-    //   { _id: user._id, username: user.username },
-    //   { expiresIn: "10m" },
-    //   (err, token) => {
-    //     if (err) return res.status(400).json(err);
-    //     res.json({
-    //       token: token,
-    //       user: { _id: user._id, username: user.username },
-    //     });
-    //   }
-    // );
-  })(req, res);
+  passport.use(
+    new LocalStrategy(function verify(username, password, cb) {
+      db.get(
+        "SELECT * FROM users WHERE username = ?",
+        [username],
+        function (err, row) {
+          if (err) {
+            return cb(err);
+          }
+          if (!row) {
+            return cb(null, false, {
+              message: "Incorrect username or password.",
+            });
+          }
+
+          crypto.pbkdf2(
+            password,
+            row.salt,
+            310000,
+            32,
+            "sha256",
+            function (err, hashedPassword) {
+              if (err) {
+                return cb(err);
+              }
+              if (
+                !crypto.timingSafeEqual(row.hashed_password, hashedPassword)
+              ) {
+                return cb(null, false, {
+                  message: "Incorrect username or password.",
+                });
+              }
+              return cb(null, row);
+            }
+          );
+        }
+      );
+    })
+  );
 };
