@@ -109,6 +109,10 @@ app.put("/entries/:id", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
 });
 
+app.get("/log-in", cors(), function (req, res, next) {
+  res.json({ msg: "cors enabled, for login origins!" });
+});
+
 app.post("/log-in", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for login origins!" });
 });
