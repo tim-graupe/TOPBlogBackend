@@ -52,12 +52,15 @@ exports.login_get = (req, res) => {
 };
 exports.login_controller = async function (req, res, next) {
   passport.authenticate("local", { session: false }, (err, user) => {
-    if (err || !user) {
-      return res.status(401).json({
-        message: "Incorrect Username or Password",
-        user,
-      });
-    }
+    bcrypt.compare(password, user.password, (err, res) => {
+      if (res) {
+        // passwords match! log user in
+        return done(null, user);
+      } else {
+        // passwords do not match!
+        return done(null, false, { message: "Incorrect password" });
+      }
+    });
     jwt.sign(
       { _id: user._id, username: user.username },
       process.env.SECRET,
