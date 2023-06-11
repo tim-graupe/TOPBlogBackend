@@ -61,16 +61,16 @@ exports.login_controller = async function (req, res, next) {
         return done(null, false, { message: "Incorrect password" });
       }
     });
-    jwt.sign(
-      { _id: user._id, username: user.username },
-      { expiresIn: "10m" },
-      (err, token) => {
-        if (err) return res.status(400).json(err);
-        res.json({
-          token: token,
-          user: { _id: user._id, username: user.username },
-        });
-      }
-    );
+    // jwt.sign(
+    //   { _id: user._id, username: user.username },
+    //   { expiresIn: "10m" },
+    //   (err, token) => {
+    //     if (err) return res.status(400).json(err);
+    //     res.json({
+    //       token: token,
+    //       user: { _id: user._id, username: user.username },
+    //     });
+    //   }
+    // );
   })(req, res);
 };
