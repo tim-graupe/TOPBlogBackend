@@ -54,9 +54,9 @@ exports.login_post = function (req, res, next) {
   console.log(req.body)
   next()
   passport.authenticate('local'), (req, res) => {
-    console.log('logged in..' + req);
+    console.log('logged in..' + req.user);
     let userInfo = {
-      username = req
+      username = req.user
     }
     res.send(userInfo)
   }
