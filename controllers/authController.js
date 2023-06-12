@@ -53,8 +53,8 @@ exports.login_get = (req, res) => {
 exports.login_post = (req, res, next) => {
   passport.authenticate(
     "local",
-    { session: false },
-    (err: any, user: any, info: any) => {
+    { session: false }
+   => {
       if (err || !user) {
         // This is what is being returned when wrong handle or password is sent
         return res.status(400).json({
