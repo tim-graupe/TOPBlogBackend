@@ -43,5 +43,9 @@ router.get("/log-in", (req, res) => {
   return res.send("GET HTTP method on login");
 });
 router.post("/log-in", auth_controller.login_post);
-
+router.post(
+  "/log-in",
+  (req, res) => (req.session.username = req.body.username)
+);
+res.end();
 module.exports = router;
