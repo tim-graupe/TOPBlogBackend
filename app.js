@@ -47,6 +47,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
+app.use((req, rees, next) => {
+  console.log("req.session ==> " + req.session);
+  return next();
+});
+
 //passport
 passport.use(
   new LocalStrategy(function (username, password, done) {
@@ -92,12 +97,6 @@ app.post(
     res.redirect("/");
   }
 );
-app.use(function (req, res, next) {
-  res.locals.isLoggedIn = req.isAuthenticated();
-  res.locals.currentUser = req.user;
-  next();
-});
-
 app.use(function (req, res, next) {
   res.locals.isLoggedIn = req.isAuthenticated();
   res.locals.currentUser = req.user;
