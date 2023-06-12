@@ -51,14 +51,32 @@ exports.login_get = (req, res) => {
   if (res.locals.currentUser) return res.redirect("/", { user: req.user });
 };
 exports.login_post = function (req, res, next) {
-  console.log(req.body);
-  next();
-  passport.authenticate("local"),
-    (req, res) => {
-      console.log("logged in.." + req.user);
-      // let userInfo = {
-      //   username = req.user
-      // }
-      // res.send(userInfo)
-    };
+  passport.authenticate(
+    "local",
+    { session: false },
+    (err: any, user: any, info: any) => {
+      if (err || !user) {
+        // This is what is being returned when wrong handle or password is sent
+        return res.status(400).json({
+          message: "Incorrect Handle or Password",
+          user: user,
+        });
+      }
+      req.login(user, { session: false }, (err) => {
+        if (err) {
+          res.send(err);
+        }
+        // sign JSON web token with id of user
+        const token = jwt.sign(
+          { id: user._id.toJSON() },
+          `${process.env.SESSION_SECRET}`,
+          {
+            // expires in seven days
+            expiresIn: "7d",
+          }
+        );
+        res.send({ user, token });
+      });
+    }
+  )(req, res);
 };
