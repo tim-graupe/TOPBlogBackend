@@ -47,5 +47,5 @@ router.post(
   "/log-in",
   (req, res) => (req.session.username = req.body.username)
 );
-res.end();
+
 module.exports = router;
