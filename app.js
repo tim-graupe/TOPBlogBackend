@@ -48,7 +48,7 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
-  console.log("req.session ==> " + req.session);
+  console.log("req.session ==> " + JSON.stringify({req.session}));
   return next();
 });
 
@@ -117,7 +117,7 @@ app.put("/entries/:id", cors(), function (req, res, next) {
 });
 
 app.post("/log-in", cors(), function (req, res, next) {
-  res.json({ msg: "cors enabled, for login origins!" });
+  res.json({ msg: req });
 });
 
 // catch 404 and forward to error handler
