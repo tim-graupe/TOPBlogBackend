@@ -117,7 +117,7 @@ app.put("/entries/:id", cors(), function (req, res, next) {
 });
 
 app.post("/log-in", cors(), function (req, res, next) {
-  res.json({ user: req.user });
+  res.json({ user: req.username });
 });
 
 // catch 404 and forward to error handler
