@@ -51,15 +51,14 @@ exports.login_get = (req, res) => {
   if (res.locals.currentUser) return res.redirect("/", { user: req.user });
 };
 exports.login_post = function (req, res, next) {
-  console.log(req.body)
-  next()
-  passport.authenticate('local'), (req, res) => {
-    console.log('logged in..' + req.user);
-    let userInfo = {
-      username = req.user
-    }
-    res.send(userInfo)
-  }
-  
-
+  console.log(req.body);
+  next();
+  passport.authenticate("local"),
+    (req, res) => {
+      console.log("logged in.." + req.user);
+      // let userInfo = {
+      //   username = req.user
+      // }
+      // res.send(userInfo)
+    };
 };
