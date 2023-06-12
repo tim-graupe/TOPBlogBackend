@@ -50,7 +50,7 @@ exports.sign_up_controller = [
 exports.login_get = (req, res) => {
   if (res.locals.currentUser) return res.redirect("/", { user: req.user });
 };
-exports.login_post = function (req, res, next) {
+exports.login_post = (req, res, next) => {
   passport.authenticate(
     "local",
     { session: false },
