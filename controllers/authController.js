@@ -2,7 +2,35 @@ const { body, validationResult } = require("express-validator");
 const User = require("../models/newUserModel");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
-const jwt = require("jsonwebtoken");
+const LocalStrategy = require("passport-local").Strategy;
+const app = express();
+app.use(express.json());
+
+passport.use(
+  new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
+    User.findOne({ email: email }, (err, user) => {
+      if (err) return done(err);
+      if (!user) return done(null, false, { message: "Incorrect email" });
+
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) throw err;
+        if (isMatch) return done(null, user);
+        else return done(null, false, { message: "Incorrect password" });
+      });
+    });
+  })
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
+    done(err, user);
+  });
+});
+
 exports.sign_up_controller = [
   body("username", "Username required!")
     .trim()
@@ -51,32 +79,13 @@ exports.login_get = (req, res) => {
   if (res.locals.currentUser) return res.redirect("/", { user: req.user });
 };
 exports.login_post = (req, res, next) => {
-  passport.authenticate(
-    "local",
-    { session: false }
-   => {
-      if (err || !user) {
-        // This is what is being returned when wrong handle or password is sent
-        return res.status(400).json({
-          message: "Incorrect Handle or Password",
-          user: user,
-        });
-      }
-      req.login(user, { session: false }, (err) => {
-        if (err) {
-          res.send(err);
-        }
-        // sign JSON web token with id of user
-        const token = jwt.sign(
-          { id: user._id.toJSON() },
-          `${process.env.SESSION_SECRET}`,
-          {
-            // expires in seven days
-            expiresIn: "7d",
-          }
-        );
-        res.send({ user, token });
-      });
-    }
-  )(req, res);
+  passport.authenticate("local", (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.status(401).json({ message: info.message });
+
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+      return res.json({ message: "Login successful" });
+    });
+  })(req, res, next);
 };
