@@ -34,7 +34,7 @@ router.post("/entries/:id", get_entries_controller.addReply);
 
 //sign up
 router.get("/sign_up", (req, res) => {
-  return res.send("GET HTTP method on sign up", { user: req.user });
+  return res.send("GET HTTP method on sign up");
 });
 router.post("/sign_up", auth_controller.sign_up_controller);
 
