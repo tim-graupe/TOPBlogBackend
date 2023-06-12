@@ -117,7 +117,7 @@ app.put("/entries/:id", cors(), function (req, res, next) {
 });
 
 app.post("/log-in", cors(), function (req, res, next) {
-  res.json({ msg: "cors enabled, for login origins!" });
+  res.json({ user: req.user });
 });
 
 // catch 404 and forward to error handler
