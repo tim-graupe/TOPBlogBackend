@@ -52,13 +52,8 @@ exports.login_get = (req, res) => {
   if (res.locals.currentUser) return res.redirect("/", { user: req.user });
 };
 exports.login_post = (req, res, next) => {
-  passport.authenticate("local", (err, user, info) => {
-    if (err) return next(err);
-    if (!user) return res.status(401).json({ message: info.message });
-
-    req.logIn(user, (err) => {
-      if (err) return next(err);
-      return res.json({ message: "Login successful" });
-    });
-  })(req, res, next);
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/sign_up",
+  });
 };
