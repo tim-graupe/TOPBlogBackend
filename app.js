@@ -47,32 +47,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
-// app.use((req, res, next) => {
-//   console.log("req.session ==> " + JSON.stringify({req.session}));
-//   return next();
-// });
-
 //passport
 passport.use(
-  new LocalStrategy(function (username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-      if (err) {
-        return done(err);
-      }
-      if (!user) {
-        return done(null, false);
-      }
-      bcrypt.compare(password, user.password, (err, res) => {
-        if (res) {
-          // passwords match! log user in
-          return done(null, user);
-        } else {
-          // passwords do not match!
-          return done(null, false, { message: "Incorrect password" });
-        }
-      });
+  new LocalStrategy({ username: "username" }, (username, password, done) => {
+    User.findOne({ username: username }, (err, user) => {
+      if (err) return done(err);
+      if (!user) return done(null, false, { message: "Incorrect username" });
 
-      return done(null, user);
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) throw err;
+        if (isMatch) return done(null, user);
+        else return done(null, false, { message: "Incorrect password" });
+      });
     });
   })
 );
@@ -81,13 +67,22 @@ passport.serializeUser(function (user, done) {
   done(null, user.id);
 });
 
-passport.deserializeUser(async function (id, done) {
-  try {
-    const user = await User.findById(id);
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
+    done(err, user);
+  });
+});
+
+app.post("/log-in", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.status(401).json({ message: info.message });
+
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+      return res.json({ message: "Login successful" });
+    });
+  })(req, res, next);
 });
 
 app.use(function (req, res, next) {
@@ -116,9 +111,9 @@ app.put("/entries/:id", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
 });
 
-app.post("/log-in", cors(), function (req, res, next) {
-  res.json({ user: req.username });
-});
+// app.post("/log-in", cors(), function (req, res, next) {
+//   res.json({ user: req.user });
+// });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
