@@ -48,16 +48,24 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
 //passport
-passport.use(
-  new LocalStrategy({ username: "username" }, (username, password, done) => {
-    User.findOne({ username: username }, (err, user) => {
-      if (err) return done(err);
-      if (!user) return done(null, false, { message: "Incorrect username" });
 
-      bcrypt.compare(password, user.password, (err, isMatch) => {
-        if (err) throw err;
-        if (isMatch) return done(null, user);
-        else return done(null, false, { message: "Incorrect password" });
+passport.use(
+  new LocalStrategy((username, password, done) => {
+    User.findOne({ username: username }, (err, user) => {
+      if (err) {
+        return done(err);
+      }
+      if (!user) {
+        return done(null, false, {
+          message: "Incorrect Username or Username does not exist",
+        });
+      }
+      bcrypt.compare(password, user.password, (err, res) => {
+        if (res) {
+          return done(null, user);
+        } else {
+          return done(null, false, { message: "Incorrect Password" });
+        }
       });
     });
   })
