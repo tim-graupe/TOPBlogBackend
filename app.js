@@ -69,28 +69,27 @@ new LocalStrategy(function (username, password, done) {
 
     return done(null, user);
   });
-})
-);
+});
 
 passport.serializeUser(function (user, done) {
-done(null, user.id);
+  done(null, user.id);
 });
 
 passport.deserializeUser(async function (id, done) {
-try {
-  const user = await User.findById(id);
-  done(null, user);
-} catch (err) {
-  done(err);
-}
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
 });
 
 app.post(
-"/log-in",
-passport.authenticate("local", { failureRedirect: "/sign_up" }),
-function (req, res) {
-  res.redirect("/");
-}
+  "/log-in",
+  passport.authenticate("local", { failureRedirect: "/sign_up" }),
+  function (req, res) {
+    res.redirect("/");
+  }
 );
 
 app.use(function (req, res, next) {
