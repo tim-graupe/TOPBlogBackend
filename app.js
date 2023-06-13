@@ -12,6 +12,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const router = require("./routes/api");
 const cors = require("cors");
 const app = express();
+app.use(express.json());
 
 //cors
 const corsOptions = {
@@ -30,7 +31,6 @@ async function main() {
 }
 
 app.use(logger("dev"));
-app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
