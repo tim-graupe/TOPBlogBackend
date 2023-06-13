@@ -8,7 +8,7 @@ const auth_controller = require("../controllers/authController");
 /* GET home page. */
 
 router.get("/", (req, res) => {
-  return res.send("GET HTTP method on user resource");
+  return res.send("GET HTTP method on user resource", { user: req.user });
 });
 
 //login

@@ -86,10 +86,10 @@ passport.deserializeUser(async function (id, done) {
 
 app.post(
   "/log-in",
-  passport.authenticate("local", { failureRedirect: "/sign_up" }),
-  function (req, res) {
-    res.redirect("/");
-  }
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/",
+  })
 );
 
 app.use(function (req, res, next) {
@@ -118,9 +118,10 @@ app.put("/entries/:id", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
 });
 
-// app.post("/log-in", cors(), function (req, res, next) {
-//   res.json({ user: req.user });
-// });
+app.use(function (req, res, next) {
+  res.locals.currentUser = req.user;
+  next();
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
