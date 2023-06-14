@@ -67,11 +67,11 @@ passport.use(
           return done(null, false, { message: "Incorrect password" });
         }
       });
-  
+
       return done(null, user);
     });
-  });
-)
+  })
+);
 
 passport.serializeUser(function (user, done) {
   done(null, user.id);
