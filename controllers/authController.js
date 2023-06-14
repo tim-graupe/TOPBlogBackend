@@ -48,9 +48,10 @@ exports.sign_up_controller = [
   },
 ];
 
-exports.login_post = (req, res, next) => {
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/sign_up",
-  });
-};
+exports.login_post(
+  "/log-in",
+  passport.authenticate("local", { failureRedirect: "/log-in" }),
+  function (req, res) {
+    res.redirect("/");
+  }
+);
