@@ -90,6 +90,8 @@ passport.deserializeUser(async function (id, done) {
 app.use(function (req, res, next) {
   res.locals.isLoggedIn = req.isAuthenticated();
   res.locals.currentUser = req.user;
+  console.log(res.locals.currentUser);
+  console.log(req.session);
   next();
 });
 
