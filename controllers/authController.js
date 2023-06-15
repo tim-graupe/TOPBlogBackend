@@ -56,8 +56,6 @@ exports.login_post = (req, res, next) => {
   });
   res.json({
     auth: req.isAuthenticated(),
-    username: req.body.username,
-    user: req.user,
-    password: req.body.password,
+    currentUser: res.locals.currentUser,
   });
 };
