@@ -1,7 +1,7 @@
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -86,11 +86,11 @@ passport.deserializeUser(async function (id, done) {
   }
 });
 
-// app.use(function (req, res, next) {
-//   res.locals.isLoggedIn = req.isAuthenticated();
-//   res.locals.currentUser = req.user;
-//   next();
-// });
+app.use(function (req, res, next) {
+  res.locals.isLoggedIn = req.isAuthenticated();
+  res.locals.currentUser = req.user;
+  next();
+});
 
 app.get("/log-out", (req, res, next) => {
   req.logout(function (err) {
