@@ -4,6 +4,7 @@ const passport = require("passport");
 const new_entry_controller = require("../controllers/newEntryController");
 const get_entries_controller = require("../controllers/getEntriesController");
 const auth_controller = require("../controllers/authController");
+const cors = require("cors");
 
 /* GET home page. */
 
@@ -12,7 +13,7 @@ router.get("/", (req, res) => {
 });
 
 //login
-router.post("/log-in", auth_controller.login_post);
+router.post("/log-in", cors(), auth_controller.login_post);
 
 //new entry
 router.get("/new_entry", (req, res) => {
