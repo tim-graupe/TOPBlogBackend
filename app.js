@@ -58,6 +58,7 @@ passport.use(
       if (!user) {
         return done(null, false);
       }
+      // req.body.password was previously user.password
       bcrypt.compare(password, req.body.password, (err, res) => {
         if (res) {
           // passwords match! log user in
