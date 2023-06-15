@@ -54,9 +54,4 @@ exports.login_post = (req, res, next) => {
     failureRedirect: "/sign_up",
     passReqToCallback: true,
   });
-  res.cookie("session", req.user._id, {
-    secure: true,
-    signed: true,
-    expires: new Date(Date.now() + 3600),
-  });
 };
