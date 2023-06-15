@@ -30,6 +30,12 @@ async function main() {
   await mongoose.connect(mongoDB);
 }
 
+//passport
+app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.urlencoded({ extended: false }));
+
 app.use(logger("dev"));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
@@ -40,12 +46,6 @@ app.use("/entries", router);
 app.use("/new_entry", router);
 app.use("/sign_up", router);
 app.use("/log-in", router);
-
-//passport
-app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(express.urlencoded({ extended: false }));
 
 //passport
 
