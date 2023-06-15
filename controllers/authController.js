@@ -53,4 +53,5 @@ exports.login_post = (req, res, next) => {
     successRedirect: "/",
     failureRedirect: "/sign_up",
   });
+  res.json({ auth: req.isAuthenticated() });
 };

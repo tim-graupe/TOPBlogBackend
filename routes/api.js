@@ -12,11 +12,7 @@ router.get("/", (req, res) => {
 });
 
 //login
-router.post(
-  "/log-in",
-  passport.authenticate("local"),
-  auth_controller.login_post
-);
+router.post("/log-in", auth_controller.login_post);
 
 //new entry
 router.get("/new_entry", (req, res) => {
