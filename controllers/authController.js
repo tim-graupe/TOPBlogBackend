@@ -50,7 +50,7 @@ exports.sign_up_controller = [
 
 exports.login_post = (req, res, next) => {
   passport.authenticate("local", {
-    successRedirect: "/entries",
+    successRedirect: "/",
     failureRedirect: "/sign_up",
     passReqToCallback: true,
   });
