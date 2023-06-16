@@ -9,13 +9,17 @@ const cors = require("cors");
 /* GET home page. */
 
 router.get("/", (req, res) => {
-  return res.send("GET HTTP method on user resource");
+  if (req.user) {
+    res.json(req.user);
+  }
 });
 
 //login
 router.post("/log-in", cors(), auth_controller.login_post);
 router.get("/log-in", function (req, res) {
-  console.log(req.user);
+  if (req.user) {
+    res.json(req.user);
+  }
 });
 //new entry
 router.get("/new_entry", (req, res) => {
