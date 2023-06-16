@@ -57,8 +57,5 @@ exports.login_post = (req, res, next) => {
 
   res.json({
     auth: req.isAuthenticated(),
-    currentUser: res.locals.currentUser,
   });
-  req.session.username = req.body.username;
-  res.end();
 };
