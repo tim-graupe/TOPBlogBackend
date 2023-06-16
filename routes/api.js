@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
 //login
 router.post("/log-in", cors(), auth_controller.login_post);
 router.get("/log-in", function (req, res) {
-  res.json({ username: req.user.username, user: req.user });
+  console.log({ req.user });
 });
 //new entry
 router.get("/new_entry", (req, res) => {
