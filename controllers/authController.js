@@ -53,6 +53,6 @@ exports.login_post = (req, res) => {
     if (err) {
       res.json({ error: err });
     }
-    return res.send(req.user);
+    // return res.send(req.user);
   });
 };
