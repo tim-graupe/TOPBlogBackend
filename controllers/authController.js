@@ -53,6 +53,15 @@ exports.login_post = (req, res) => {
     if (err) {
       res.json({ error: err });
     }
-    // return res.send(req.user);
+    return res.send(req.user);
   });
+};
+
+exports.getCurrentUser = (req, res) => {
+  console.log("current user: ", req.user);
+  if (req.user) {
+    res.json({ user: req.user });
+  } else {
+    res.json({ user: null });
+  }
 };
