@@ -1,5 +1,5 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 const passport = require("passport");
 const new_entry_controller = require("../controllers/newEntryController");
 const get_entries_controller = require("../controllers/getEntriesController");
@@ -15,7 +15,12 @@ router.get("/", (req, res) => {
 });
 
 //login
-router.post("/log-in", cors(), auth_controller.login_post);
+router.post(
+  "/log-in",
+  cors(),
+  passport.authenticate("local"),
+  auth_controller.login_post
+);
 router.get("/log-in", function (req, res) {
   if (req.user) {
     res.json(req.user);
