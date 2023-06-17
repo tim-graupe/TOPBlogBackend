@@ -1,5 +1,5 @@
-const express = require("express");
-const router = express.Router();
+var express = require("express");
+var router = express.Router();
 const passport = require("passport");
 const new_entry_controller = require("../controllers/newEntryController");
 const get_entries_controller = require("../controllers/getEntriesController");
@@ -7,6 +7,10 @@ const auth_controller = require("../controllers/authController");
 const cors = require("cors");
 
 /* GET home page. */
+
+router.get("/", (req, res) => {
+  return res.send("GET HTTP method on user resource");
+});
 
 //login
 router.post("/log-in", cors(), auth_controller.login_post);
