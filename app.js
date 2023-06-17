@@ -31,7 +31,7 @@ async function main() {
 }
 
 //passport
-app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
+app.use(session({ secret: "cats", resave: true, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
@@ -49,55 +49,28 @@ app.use("/log-in", router);
 
 //passport
 
-// passport.use(
-//   new LocalStrategy(function (username, password, done) {
-//     User.findOne({ username: username }, function (err, user) {
-//       if (err) {
-//         return done(err);
-//       }
-//       if (!user) {
-//         return done(null, false);
-//       }
-//       // req.body.password was previously req.body.password
-//       bcrypt.compare(password, user.password, (err, res) => {
-//         if (res) {
-//           // passwords match! log user in
-//           return done(null, user);
-//         } else {
-//           // passwords do not match!
-//           return done(null, false, { message: "Incorrect password" });
-//         }
-//       });
-
-//       return done(null, user);
-//     });
-//   })
-// );
-
 passport.use(
   new LocalStrategy(function (username, password, done) {
-    async function getUser(username, password, done) {
-      try {
-        const user = await User.findOne({ username: username });
-        if (!user) {
-          return done(null, false);
-        }
-        bcrypt.compare(password, user.password, (err, res) => {
-          if (res) {
-            // passwords match! log user in
-            return done(null, user);
-          } else {
-            // passwords do not match!
-            return done(null, false, { message: "Incorrect password" });
-          }
-        });
-        if (user) {
-          console.log(user);
-        }
-      } catch (err) {
-        console.log(err);
+    User.findOne({ username: username }, function (err, user) {
+      if (err) {
+        return done(err);
       }
-    }
+      if (!user) {
+        return done(null, false);
+      }
+      // req.body.password was previously req.body.password
+      bcrypt.compare(password, user.password, (err, res) => {
+        if (res) {
+          // passwords match! log user in
+          return done(null, user);
+        } else {
+          // passwords do not match!
+          return done(null, false, { message: "Incorrect password" });
+        }
+      });
+
+      return done(null, user);
+    });
   })
 );
 
@@ -144,8 +117,6 @@ app.put("/entries/:id", cors(), function (req, res, next) {
 
 app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
-  console.log(req.user);
-  console.log(res.locals.currentUser);
   next();
 });
 

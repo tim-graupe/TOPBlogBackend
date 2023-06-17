@@ -48,20 +48,11 @@ exports.sign_up_controller = [
   },
 ];
 
-exports.login_post = (req, res) => {
-  req.login(req.user, function (err) {
-    if (err) {
-      res.json({ error: err });
-    }
-    return res.send(req.user);
+exports.login_post = (req, res, next) => {
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/sign_up",
+    // passReqToCallback: true,
   });
-};
-
-exports.getCurrentUser = (req, res) => {
-  console.log("current user: ", req);
-  if (req.user) {
-    res.json({ user: req.user });
-  } else {
-    res.json({ user: null });
-  }
+  res.json({ auth: req.isAuthenticated() });
 };
