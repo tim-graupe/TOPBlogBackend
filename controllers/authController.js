@@ -54,5 +54,5 @@ exports.login_post = (req, res, next) => {
     failureRedirect: "/sign_up",
     // passReqToCallback: true,
   });
-  res.json({ auth: req });
+  // res.json({ auth: req. });
 };
