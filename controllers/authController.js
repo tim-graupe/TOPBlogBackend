@@ -58,7 +58,7 @@ exports.login_post = (req, res) => {
 };
 
 exports.getCurrentUser = (req, res) => {
-  console.log("current user: ", req.user);
+  console.log("current user: ", req);
   if (req.user) {
     res.json({ user: req.user });
   } else {
