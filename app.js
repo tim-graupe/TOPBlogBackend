@@ -85,6 +85,7 @@ passport.deserializeUser(async function (id, done) {
   } catch (err) {
     done(err);
   }
+  console.log(user);
 });
 
 app.use(function (req, res, next) {
