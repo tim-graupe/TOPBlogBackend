@@ -48,17 +48,11 @@ exports.sign_up_controller = [
   },
 ];
 
-exports.login_post = (req, res, next) => {
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/sign_up",
-    // passReqToCallback: true,
-  }
-  return res.send(req.user));
-
-  res.json({
-    auth: req.isAuthenticated(),
-    user: req.user,
-    username: req.username,
+exports.login_post = (req, res) => {
+  req.login(req.user, function (err) {
+    if (err) {
+      res.json({ error: err });
+    }
+    return res.send(req.user);
   });
 };
