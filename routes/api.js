@@ -15,12 +15,7 @@ router.get("/", (req, res) => {
 });
 
 //login
-router.post(
-  "/log-in",
-  cors(),
-  passport.authenticate("local"),
-  auth_controller.login_post
-);
+router.post("/log-in", cors(), auth_controller.login_post);
 router.get("/log-in", function (req, res) {
   if (req.user) {
     res.json(req.user);
