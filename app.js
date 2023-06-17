@@ -76,28 +76,28 @@ app.use("/log-in", router);
 
 passport.use(
   new LocalStrategy(function (username, password, done) {
-      async function (username, password, done) { 
-        try {
-          const user = await User.findOne({username: username})
-          if (!user) {
-            return done(null, false)
-          }
-          bcrypt.compare(password, user.password, (err, res) => {
-            if (res) {
-              // passwords match! log user in
-              return done(null, user);
-            } else {
-              // passwords do not match!
-              return done(null, false, { message: "Incorrect password" });
-            }
-          })
-          if (user) {
-            console.log(user)
-          }
-        } catch (err) {
-          console.log(err)
+    async function getUser(username, password, done) {
+      try {
+        const user = await User.findOne({ username: username });
+        if (!user) {
+          return done(null, false);
         }
-       }
+        bcrypt.compare(password, user.password, (err, res) => {
+          if (res) {
+            // passwords match! log user in
+            return done(null, user);
+          } else {
+            // passwords do not match!
+            return done(null, false, { message: "Incorrect password" });
+          }
+        });
+        if (user) {
+          console.log(user);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
   })
 );
 
