@@ -31,10 +31,20 @@ async function main() {
 }
 
 //passport
-app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
+// app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
+
+// app.use(express.urlencoded({ extended: false }));
+const bodyParser = require("body-parser");
+const expressSession = require("express-session")({
+  secret: "cats",
+  resave: false,
+  saveUninitialized: false,
+});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressSession);
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.urlencoded({ extended: false }));
 
 app.use(logger("dev"));
 app.use(cookieParser());
@@ -86,11 +96,10 @@ passport.deserializeUser(async function (id, done) {
   }
 });
 
-// app.use(function (req, res, next) {
-//   res.locals.isLoggedIn = req.isAuthenticated();
-//   res.locals.currentUser = req.user;
-//   next();
-// });
+app.use(function (req, res, next) {
+  res.locals.currentUser = req.user;
+  next();
+});
 
 app.get("/log-out", (req, res, next) => {
   req.logout(function (err) {
@@ -110,11 +119,6 @@ app.delete("/entries/:id", cors(), function (req, res, next) {
 
 app.put("/entries/:id", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
-});
-
-app.use(function (req, res, next) {
-  res.locals.currentUser = req.user;
-  next();
 });
 
 // catch 404 and forward to error handler
