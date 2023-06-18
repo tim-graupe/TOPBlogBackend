@@ -8,6 +8,10 @@ const logger = require("morgan");
 const session = require("express-session");
 const User = require("./models/newUserModel");
 const passport = require("passport");
+const passportJWT = require("passport-jwt");
+const JwtStrategy = passportJWT.Strategy;
+const ExtractJwt = passportJWT.ExtractJwt;
+
 const LocalStrategy = require("passport-local").Strategy;
 const router = require("./routes/api");
 const cors = require("cors");
@@ -23,6 +27,7 @@ const corsOptions = {
   ],
   optionSuccessStatus: 200,
 };
+
 //mongoose
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
@@ -33,10 +38,34 @@ async function main() {
 }
 
 //passport
-app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.JWT_SECRET,
+};
+
+const strategy = new JwtStrategy(jwtOptions, (jwtPayload, done) => {
+  User.findById(jwtPayload.id)
+    .then((user) => {
+      if (user) {
+        return done(null, user);
+      } else {
+        return done(null, false);
+      }
+    })
+    .catch((error) => {
+      return done(error, false);
+    });
+});
+
+passport.use(strategy);
 app.use(passport.initialize());
-app.use(passport.session());
+
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
+  res.json(req.user);
+});
 
 app.use(logger("dev"));
 app.use(cookieParser());
@@ -48,63 +77,6 @@ app.use("/entries", router);
 app.use("/new_entry", router);
 app.use("/sign_up", router);
 app.use("/log-in", router);
-
-//passport
-
-passport.use(
-  new LocalStrategy(function (username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-      if (err) {
-        return done(err);
-      }
-      if (!user) {
-        return done(null, false);
-      }
-      // req.body.password was previously req.body.password
-      bcrypt.compare(password, user.password, (err, res) => {
-        if (res) {
-          // passwords match! log user in
-          return done(null, user);
-        } else {
-          // passwords do not match!
-          return done(null, false, { message: "Incorrect password" });
-        }
-      });
-
-      return done(null, user);
-    });
-  })
-);
-
-passport.serializeUser(function (user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async function (id, done) {
-  try {
-    const user = await User.findById(id);
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
-});
-
-app.use(function (req, res, next) {
-  res.locals.isLoggedIn = req.isAuthenticated();
-  res.locals.currentUser = req.user;
-  console.log(res.locals.currentUser);
-  console.log(req.session);
-  next();
-});
-
-app.get("/log-out", (req, res, next) => {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/");
-  });
-});
 
 app.post("/sign_up", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });

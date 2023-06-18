@@ -67,3 +67,31 @@ exports.login_post = (req, res, next) => {
     userTwo: req.body.user,
   });
 };
+
+exports.login_post = (req, res, next) => {
+  const { username, password } = req.body;
+
+  User.findOne({ username })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ message: "User not found." });
+      }
+
+      // Compare the provided password with the stored password
+      user.comparePassword(password, (err, isMatch) => {
+        if (err || !isMatch) {
+          return res.status(401).json({ message: "Authentication failed." });
+        }
+
+        // Generate a signed JWT
+        const token = jwt.sign({ id: user._id }, jwtOptions.secretOrKey);
+
+        // Send the token in the response
+        return res.json({ token });
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error." });
+    });
+};
