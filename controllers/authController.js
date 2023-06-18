@@ -53,8 +53,8 @@ exports.login_post = (req, res, next) => {
     successRedirect: "/",
     failureRedirect: "/sign_up",
     passReqToCallback: true,
-  }
-  console.log('req.body ==> ', req.body));
+  });
+  console.log("req.body ==> ", req.body);
 
   res.json({
     authenticated: req.isAuthenticated(),
