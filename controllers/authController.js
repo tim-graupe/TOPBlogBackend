@@ -3,6 +3,7 @@ const User = require("../models/newUserModel");
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local").Strategy;
+const jwt = require("jsonwebtoken");
 
 exports.sign_up_controller = [
   body("username", "Username required!")
