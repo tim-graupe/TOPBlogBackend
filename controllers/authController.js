@@ -48,22 +48,13 @@ exports.sign_up_controller = [
   },
 ];
 
-exports.login_post = (req, res, next) => {
-  passport.authenticate(
-    "local",
-    {
-      successRedirect: "/",
-      failureRedirect: "/sign_up",
-      passReqToCallback: true,
-    },
-    { session: false }
-  );
-  console.log("req.body ==> ", req.body);
-
+exports.login_post("/log-in", passport.authenticate("local"), (req, res) => {
+  const token = authenticate.getToken({ _id: req.user._id });
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
   res.json({
-    authenticated: req.isAuthenticated(),
-    user: req.user,
-    username: req.username,
-    userTwo: req.body.user,
+    success: true,
+    token: token,
+    status: "You are successfully logged in!",
   });
-};
+});
