@@ -34,9 +34,9 @@ async function main() {
 
 //passport
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(passport.initialize());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(logger("dev"));
