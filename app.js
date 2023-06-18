@@ -1,7 +1,7 @@
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -31,20 +31,10 @@ async function main() {
 }
 
 //passport
-// app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
-
-// app.use(express.urlencoded({ extended: false }));
-const bodyParser = require("body-parser");
-const expressSession = require("express-session")({
-  secret: "cats",
-  resave: false,
-  saveUninitialized: false,
-});
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(expressSession);
+app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.urlencoded({ extended: false }));
 
 app.use(logger("dev"));
 app.use(cookieParser());
@@ -68,6 +58,7 @@ passport.use(
       if (!user) {
         return done(null, false);
       }
+      // req.body.password was previously req.body.password
       bcrypt.compare(password, user.password, (err, res) => {
         if (res) {
           // passwords match! log user in
@@ -97,7 +88,10 @@ passport.deserializeUser(async function (id, done) {
 });
 
 app.use(function (req, res, next) {
+  res.locals.isLoggedIn = req.isAuthenticated();
   res.locals.currentUser = req.user;
+  console.log(res.locals.currentUser);
+  console.log(req.session);
   next();
 });
 
@@ -119,6 +113,13 @@ app.delete("/entries/:id", cors(), function (req, res, next) {
 
 app.put("/entries/:id", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
+});
+
+app.use(function (req, res, next) {
+  res.locals.currentUser = req.user;
+  console.log(req.user);
+  console.log(res.locals.currentUser);
+  next();
 });
 
 // catch 404 and forward to error handler
