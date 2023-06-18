@@ -11,7 +11,7 @@ const passport = require("passport");
 const passportJWT = require("passport-jwt");
 const JwtStrategy = passportJWT.Strategy;
 const ExtractJwt = passportJWT.ExtractJwt;
-
+const jwt = require("jsonwebtoken");
 const LocalStrategy = require("passport-local").Strategy;
 const router = require("./routes/api");
 const cors = require("cors");
