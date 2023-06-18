@@ -13,7 +13,7 @@ const router = require("./routes/api");
 const cors = require("cors");
 const app = express();
 app.use(express.json());
-
+app.use(express.bodyParser());
 //cors
 const corsOptions = {
   origin: [
