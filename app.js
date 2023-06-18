@@ -1,7 +1,7 @@
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
@@ -31,7 +31,7 @@ async function main() {
 }
 
 //passport
-app.use(session({ secret: "cats", resave: true, saveUninitialized: false }));
+app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
@@ -58,7 +58,6 @@ passport.use(
       if (!user) {
         return done(null, false);
       }
-      // req.body.password was previously req.body.password
       bcrypt.compare(password, user.password, (err, res) => {
         if (res) {
           // passwords match! log user in
@@ -85,8 +84,13 @@ passport.deserializeUser(async function (id, done) {
   } catch (err) {
     done(err);
   }
-  console.log(user);
 });
+
+// app.use(function (req, res, next) {
+//   res.locals.isLoggedIn = req.isAuthenticated();
+//   res.locals.currentUser = req.user;
+//   next();
+// });
 
 app.get("/log-out", (req, res, next) => {
   req.logout(function (err) {
