@@ -73,12 +73,7 @@ exports.login_post = (req, res, next) => {
         }
 
         // Generate a signed JWT
-        const token = jwt.sign(
-          { id: user._id },
-          jwtOptions.secretOrKey,
-          username,
-          user._id
-        );
+        const token = jwt.sign({ id: user._id }, jwtOptions.secretOrKey);
 
         // Send the token in the response
         return res.json({ token });
