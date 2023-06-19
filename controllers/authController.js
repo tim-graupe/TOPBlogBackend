@@ -79,7 +79,10 @@ exports.login_post = (req, res, next) => {
           username: user.username,
           admin: user.admin,
         };
-        const token = jwt.sign({ id: user._id }, jwtOptions.secretOrKey);
+        const token = jwt.sign(
+          { id: user._id, user: body },
+          jwtOptions.secretOrKey
+        );
 
         // Send the token in the response
         return res.json({ token });
