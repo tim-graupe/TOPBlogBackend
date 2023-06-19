@@ -71,7 +71,7 @@ app.use(logger("dev"));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
-// app.options("*", cors(cors(corsOptions)));
+app.options("*", cors(cors(corsOptions)));
 app.use("/", router);
 app.use("/entries", router);
 app.use("/new_entry", router);
