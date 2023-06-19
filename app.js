@@ -89,6 +89,10 @@ app.put("/entries/:id", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
 });
 
+app.post("/log-in", cors(), function (req, res, next) {
+  res.json({ msg: "cors enabled, for all login origins!" });
+});
+
 app.use(function (req, res, next) {
   res.locals.currentUser = req.user;
   console.log(req.user);
