@@ -50,10 +50,10 @@ exports.sign_up_controller = [
   },
 ];
 
-const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECRET,
-};
+// const jwtOptions = {
+//   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+//   secretOrKey: process.env.JWT_SECRET,
+// };
 
 exports.login_post = (req, res, next) => {
   passport.authenticate(
