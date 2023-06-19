@@ -43,19 +43,23 @@ const jwtOptions = {
   secretOrKey: process.env.JWT_SECRET,
 };
 
-const strategy = new JwtStrategy(jwtOptions, (jwtPayload, done) => {
-  User.findById(jwtPayload.id)
-    .then((user) => {
-      if (user) {
-        return done(null, user);
-      } else {
-        return done(null, false);
-      }
-    })
-    .catch((error) => {
-      return done(error, false);
-    });
-});
+const strategy = new JwtStrategy(
+  { passReqToCallback: true },
+  jwtOptions,
+  (req, jwtPayload, done) => {
+    User.findById(jwtPayload.id)
+      .then((user) => {
+        if (user) {
+          return done(null, user);
+        } else {
+          return done(null, false);
+        }
+      })
+      .catch((error) => {
+        return done(error, false);
+      });
+  }
+);
 
 passport.use(strategy);
 app.use(passport.initialize());
