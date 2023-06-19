@@ -14,11 +14,7 @@ router.get("/", (req, res) => {
 
 //login
 //login
-router.post(
-  "/log-in",
-  passport.authenticate("jwt", { session: false }),
-  auth_controller.login_post
-);
+router.post("/log-in", auth_controller.login_post);
 router.get("/log-in", function (req, res) {
   if (req.user) {
     res.json(req.user);
