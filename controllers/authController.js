@@ -69,7 +69,7 @@ exports.login_post = (req, res, next) => {
       // Compare the provided password with the stored password
       user.comparePassword(password, (err, isMatch) => {
         if (err || !isMatch) {
-          return res.status(401).json({ message: "Authentication failed." });
+          return res.status(401).json({ message: "Invalid password." });
         }
 
         // Generate a signed JWT
@@ -79,7 +79,7 @@ exports.login_post = (req, res, next) => {
         );
 
         // Send the token in the response
-        return res.json({ token });
+        return res.json({ token, username, id });
       });
     })
     .catch((error) => {
