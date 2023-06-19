@@ -41,55 +41,24 @@ async function main() {
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_SECRET,
+  passReqToCallback: true,
 };
 
-// const strategy = new JwtStrategy(
-//   { passReqToCallback: true },
-//   jwtOptions,
-//   (req, jwtPayload, done) => {
-//     User.findById(jwtPayload.id)
-//       .then((user) => {
-//         if (user) {
-//           return done(null, user);
-//         } else {
-//           return done(null, false);
-//         }
-//       })
-//       .catch((error) => {
-//         return done(error, false);
-//       });
-//   }
-// );
-
-passport.use(new JwtStrategy(
-  jwtOptions,
-  passReqToCallback,
-  (jwtPayload, done) => {
-    User.findById(jwtPayload.id), function(err, user) {
-    
-      if (err) {
-        return done(err, false)
-      }
+const strategy = new JwtStrategy(jwtOptions, (jwtPayload, done) => {
+  User.findById(jwtPayload.id)
+    .then((user) => {
       if (user) {
-        return done(null, user)
+        return done(null, user);
       } else {
-        return done(null, false)
+        return done(null, false);
       }
-    }
-      // .then((user) => {
-      //   if (user) {
-      //     return done(null, user);
-      //   } else {
-      //     return done(null, false);
-      //   }
-      // })
-      // .catch((error) => {
-      //   return done(error, false);
-      // });
-  }
-););
+    })
+    .catch((error) => {
+      return done(error, false);
+    });
+});
 
-
+passport.use(strategy);
 app.use(passport.initialize());
 
 app.use(express.urlencoded({ extended: false }));
