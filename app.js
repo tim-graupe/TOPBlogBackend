@@ -38,10 +38,11 @@ async function main() {
 }
 
 //passport
-const jwtOptions = {}
+const jwtOptions = {
+  opts.jwtFromRequest : ExtractJwt.fromAuthHeaderAsBearerToken()
+opts.secretOrKey : process.env.JWT_SECRET
+}
 
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
-opts.secretOrKey: process.env.JWT_SECRET
 // const strategy = new JwtStrategy(
 //   { passReqToCallback: true },
 //   jwtOptions,
