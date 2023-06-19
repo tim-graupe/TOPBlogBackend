@@ -39,9 +39,9 @@ async function main() {
 
 //passport
 const jwtOptions = {
-  opts.jwtFromRequest : ExtractJwt.fromAuthHeaderAsBearerToken()
-opts.secretOrKey : process.env.JWT_SECRET
-}
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.JWT_SECRET,
+};
 
 // const strategy = new JwtStrategy(
 //   { passReqToCallback: true },
@@ -88,6 +88,8 @@ passport.use(new JwtStrategy(
       // });
   }
 ););
+
+
 app.use(passport.initialize());
 
 app.use(express.urlencoded({ extended: false }));
