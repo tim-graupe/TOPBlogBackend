@@ -79,7 +79,7 @@ exports.login_post = (req, res, next) => {
         );
 
         // Send the token in the response
-        return res.json({ token, username, id });
+        return res.json({ token });
       });
     })
     .catch((error) => {
