@@ -8,9 +8,13 @@ const cors = require("cors");
 
 /* GET home page. */
 
-router.get("/", (req, res) => {
-  return res.send("GET HTTP method on user resource");
-});
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.json(req.user);
+  }
+);
 
 //login
 //login
