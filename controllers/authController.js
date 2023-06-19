@@ -4,6 +4,7 @@ const passport = require("passport");
 const bcrypt = require("bcryptjs");
 const LocalStrategy = require("passport-local").Strategy;
 const jwt = require("jsonwebtoken");
+const ExtractJwt = passportJWT.ExtractJwt;
 require("dotenv").config();
 
 exports.sign_up_controller = [
@@ -50,10 +51,10 @@ exports.sign_up_controller = [
   },
 ];
 
-// const jwtOptions = {
-//   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-//   secretOrKey: process.env.JWT_SECRET,
-// };
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.JWT_SECRET,
+};
 
 exports.login_post = (req, res, next) => {
   passport.authenticate(
