@@ -57,37 +57,41 @@ const jwtOptions = {
   secretOrKey: process.env.JWT_SECRET,
 };
 
-exports.login_post = (req, res, next) => {
+exports.login_post = async (req, res, next) => {
   const { username, password } = req.body;
   try {
-    passport.authenticate("local", { session: false }, (err, user, info) => {
-      User.findOne({ username })
-        .then((user) => {
-          if (!user) {
-            return res.status(404).json({ message: "User not found." });
-          }
-
-          // Compare the provided password with the stored password
-          user.comparePassword(password, (err, isMatch) => {
-            if (err || !isMatch) {
-              return res.status(401).json({ message: "Invalid password." });
+    await passport.authenticate(
+      "local",
+      { session: false },
+      (err, user, info) => {
+        User.findOne({ username })
+          .then((user) => {
+            if (!user) {
+              return res.status(404).json({ message: "User not found." });
             }
 
-            // Generate a signed JWT
-            const token = jwt.sign(
-              { id: user._id, username: user.username },
-              jwtOptions.secretOrKey
-            );
+            // Compare the provided password with the stored password
+            user.comparePassword(password, (err, isMatch) => {
+              if (err || !isMatch) {
+                return res.status(401).json({ message: "Invalid password." });
+              }
 
-            // Send the token in the response
-            return res.json({ token });
+              // Generate a signed JWT
+              const token = jwt.sign(
+                { id: user._id, username: user.username },
+                jwtOptions.secretOrKey
+              );
+
+              // Send the token in the response
+              return res.json({ token });
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+            res.status(500).json({ message: "Internal Server Error." });
           });
-        })
-        .catch((error) => {
-          console.log(error);
-          res.status(500).json({ message: "Internal Server Error." });
-        });
-    });
+      }
+    );
   } catch (error) {
     console.log(error);
   }
