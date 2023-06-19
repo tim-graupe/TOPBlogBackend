@@ -38,30 +38,55 @@ async function main() {
 }
 
 //passport
-const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECRET,
-};
+const jwtOptions = {}
 
-const strategy = new JwtStrategy(
-  { passReqToCallback: true },
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
+opts.secretOrKey: process.env.JWT_SECRET
+// const strategy = new JwtStrategy(
+//   { passReqToCallback: true },
+//   jwtOptions,
+//   (req, jwtPayload, done) => {
+//     User.findById(jwtPayload.id)
+//       .then((user) => {
+//         if (user) {
+//           return done(null, user);
+//         } else {
+//           return done(null, false);
+//         }
+//       })
+//       .catch((error) => {
+//         return done(error, false);
+//       });
+//   }
+// );
+
+passport.use(new JwtStrategy(
   jwtOptions,
-  (req, jwtPayload, done) => {
-    User.findById(jwtPayload.id)
-      .then((user) => {
-        if (user) {
-          return done(null, user);
-        } else {
-          return done(null, false);
-        }
-      })
-      .catch((error) => {
-        return done(error, false);
-      });
+  passReqToCallback
+  (jwtPayload, done) => {
+    User.findById(jwtPayload.id), function(err, user) {
+    
+      if (err) {
+        return done(err, false)
+      }
+      if (user) {
+        return done(null, user)
+      } else {
+        return done(null, false)
+      }
+    }
+      // .then((user) => {
+      //   if (user) {
+      //     return done(null, user);
+      //   } else {
+      //     return done(null, false);
+      //   }
+      // })
+      // .catch((error) => {
+      //   return done(error, false);
+      // });
   }
-);
-
-passport.use(strategy);
+););
 app.use(passport.initialize());
 
 app.use(express.urlencoded({ extended: false }));
