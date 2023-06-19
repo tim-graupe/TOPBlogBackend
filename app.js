@@ -63,7 +63,7 @@ const jwtOptions = {
 
 passport.use(new JwtStrategy(
   jwtOptions,
-  passReqToCallback
+  passReqToCallback,
   (jwtPayload, done) => {
     User.findById(jwtPayload.id), function(err, user) {
     
