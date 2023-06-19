@@ -57,42 +57,33 @@ const jwtOptions = {
   secretOrKey: process.env.JWT_SECRET,
 };
 
-exports.login_post = async (req, res, next) => {
+exports.login_post = (req, res, next) => {
   const { username, password } = req.body;
-  try {
-    await passport.authenticate(
-      "local",
-      { session: false },
-      (err, user, info) => {
-        User.findOne({ username })
-          .then((user) => {
-            if (!user) {
-              return res.status(404).json({ message: "User not found." });
-            }
 
-            // Compare the provided password with the stored password
-            user.comparePassword(password, (err, isMatch) => {
-              if (err || !isMatch) {
-                return res.status(401).json({ message: "Invalid password." });
-              }
-
-              // Generate a signed JWT
-              const token = jwt.sign(
-                { id: user._id, username: user.username },
-                jwtOptions.secretOrKey
-              );
-
-              // Send the token in the response
-              return res.json({ token });
-            });
-          })
-          .catch((error) => {
-            console.log(error);
-            res.status(500).json({ message: "Internal Server Error." });
-          });
+  User.findOne({ username })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ message: "User not found." });
       }
-    );
-  } catch (error) {
-    console.log(error);
-  }
+
+      // Compare the provided password with the stored password
+      user.comparePassword(password, (err, isMatch) => {
+        if (err || !isMatch) {
+          return res.status(401).json({ message: "Invalid username." });
+        }
+
+        // Generate a signed JWT
+        const token = jwt.sign(
+          { id: user._id, username: user.username },
+          jwtOptions.secretOrKey
+        );
+
+        // Send the token in the response
+        return res.json({ token });
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ message: "Internal Server Error." });
+    });
 };
