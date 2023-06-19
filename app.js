@@ -41,7 +41,6 @@ async function main() {
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_SECRET,
-  passReqToCallback: true,
 };
 
 const strategy = new JwtStrategy(jwtOptions, (jwtPayload, done) => {
