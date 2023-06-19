@@ -71,7 +71,7 @@ app.use(logger("dev"));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
-app.options("*", cors(cors(corsOptions)));
+// app.options("*", cors(cors(corsOptions)));
 app.use("/", router);
 app.use("/entries", router);
 app.use("/new_entry", router);
@@ -87,10 +87,6 @@ app.delete("/entries/:id", cors(), function (req, res, next) {
 
 app.put("/entries/:id", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
-});
-
-app.post("/log-in", cors(), function (req, res, next) {
-  res.json({ msg: "cors enabled, for all login origins!" });
 });
 
 app.use(function (req, res, next) {

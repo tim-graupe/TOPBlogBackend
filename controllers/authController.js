@@ -77,7 +77,7 @@ exports.login_post = (req, res, next) => {
           { id: user._id },
           jwtOptions.secretOrKey,
           username,
-          user._idd
+          user._id
         );
 
         // Send the token in the response
