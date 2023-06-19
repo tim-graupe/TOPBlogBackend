@@ -57,26 +57,6 @@ const jwtOptions = {
   secretOrKey: process.env.JWT_SECRET,
 };
 
-// exports.login_post = (req, res, next) => {
-//   passport.authenticate(
-//     "local",
-//     {
-//       successRedirect: "/",
-//       failureRedirect: "/sign_up",
-//       passReqToCallback: true,
-//     },
-//     { session: false }
-//   );
-//   console.log("req.body ==> ", req.body);
-
-//   res.json({
-//     authenticated: req.isAuthenticated(),
-//     user: req.user,
-//     username: req.username,
-//     userTwo: req.body.user,
-//   });
-// };
-
 exports.login_post = (req, res, next) => {
   const { username, password } = req.body;
 
