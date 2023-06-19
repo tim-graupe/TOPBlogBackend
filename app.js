@@ -63,9 +63,9 @@ app.use(passport.initialize());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
-  res.json(req.user);
-});
+// app.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
+//   res.json(req.user);
+// });
 
 app.use(logger("dev"));
 app.use(cookieParser());
