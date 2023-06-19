@@ -57,25 +57,25 @@ const jwtOptions = {
   secretOrKey: process.env.JWT_SECRET,
 };
 
-exports.login_post = (req, res, next) => {
-  passport.authenticate(
-    "local",
-    {
-      successRedirect: "/",
-      failureRedirect: "/sign_up",
-      passReqToCallback: true,
-    },
-    { session: false }
-  );
-  console.log("req.body ==> ", req.body);
+// exports.login_post = (req, res, next) => {
+//   passport.authenticate(
+//     "local",
+//     {
+//       successRedirect: "/",
+//       failureRedirect: "/sign_up",
+//       passReqToCallback: true,
+//     },
+//     { session: false }
+//   );
+//   console.log("req.body ==> ", req.body);
 
-  res.json({
-    authenticated: req.isAuthenticated(),
-    user: req.user,
-    username: req.username,
-    userTwo: req.body.user,
-  });
-};
+//   res.json({
+//     authenticated: req.isAuthenticated(),
+//     user: req.user,
+//     username: req.username,
+//     userTwo: req.body.user,
+//   });
+// };
 
 exports.login_post = (req, res, next) => {
   const { username, password } = req.body;
@@ -93,7 +93,10 @@ exports.login_post = (req, res, next) => {
         }
 
         // Generate a signed JWT
-        const token = jwt.sign({ id: user._id }, jwtOptions.secretOrKey);
+        const token = jwt.sign(
+          { id: user._id, username: user.username },
+          jwtOptions.secretOrKey
+        );
 
         // Send the token in the response
         return res.json({ token });
