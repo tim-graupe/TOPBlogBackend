@@ -88,6 +88,6 @@ exports.login_post = (req, res, next) => {
       res.status(500).json({ message: "Internal Server Error." });
     });
 
-  console.log(req);
+  // console.log(req);
   console.log(req.body);
 };
