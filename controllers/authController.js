@@ -91,3 +91,12 @@ exports.login_post = (req, res, next) => {
   // console.log(req);
   console.log(req.body);
 };
+
+exports.logout_get = (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+};
