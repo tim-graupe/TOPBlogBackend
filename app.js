@@ -79,9 +79,14 @@ app.use(passport.initialize());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// app.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
-//   res.json(req.user);
-// });
+app.use(
+  session({
+    secret: "dogs",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: true },
+  })
+);
 
 app.use(logger("dev"));
 app.use(cookieParser());
