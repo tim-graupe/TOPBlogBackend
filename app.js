@@ -63,22 +63,6 @@ app.use(passport.initialize());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-passport.serializeUser(function (user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async function (id, done) {
-  try {
-    const user = await User.findById(id);
-    console.log("deserialize");
-    console.log(user);
-    console.log(id);
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
-});
-
 // app.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
 //   res.json(req.user);
 // });

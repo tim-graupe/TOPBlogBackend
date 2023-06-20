@@ -87,4 +87,20 @@ exports.login_post = (req, res, next) => {
       console.log(error);
       res.status(500).json({ message: "Internal Server Error." });
     });
+
+  passport.serializeUser(function (user, done) {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser(async function (id, done) {
+    try {
+      const user = await User.findById(id);
+      console.log("deserialize");
+      console.log(user);
+      console.log(id);
+      done(null, user);
+    } catch (err) {
+      done(err);
+    }
+  });
 };
