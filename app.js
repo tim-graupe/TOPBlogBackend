@@ -19,6 +19,7 @@ const bodyParser = require("body-parser");
 const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
+// app.use(passport.authenticate("session"));
 //cors
 const corsOptions = {
   origin: [
@@ -50,7 +51,6 @@ app.use(
     cookie: { secure: true },
   })
 );
-app.use(passport.authenticate("session"));
 
 const strategy = new JwtStrategy(jwtOptions, (jwtPayload, done) => {
   User.findById(jwtPayload.id)
