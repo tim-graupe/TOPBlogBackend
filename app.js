@@ -63,6 +63,22 @@ app.use(passport.initialize());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async function (id, done) {
+  try {
+    const user = await User.findById(id);
+    console.log("deserialize");
+    console.log(user);
+    console.log(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});
+
 // app.get("/", passport.authenticate("jwt", { session: false }), (req, res) => {
 //   res.json(req.user);
 // });
@@ -95,18 +111,6 @@ app.put("/entries/:id", cors(), function (req, res, next) {
 //   console.log(res.locals.currentUser);
 //   next();
 // });
-passport.serializeUser(function (user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async function (id, done) {
-  try {
-    const user = await User.findById(id);
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
-});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
