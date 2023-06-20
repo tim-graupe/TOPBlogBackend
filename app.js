@@ -43,6 +43,15 @@ const jwtOptions = {
   secretOrKey: process.env.JWT_SECRET,
 };
 
+app.use(
+  session({
+    secret: "dogs",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: true },
+  })
+);
+
 const strategy = new JwtStrategy(jwtOptions, (jwtPayload, done) => {
   User.findById(jwtPayload.id)
     .then((user) => {
@@ -78,15 +87,6 @@ app.use(passport.initialize());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.use(
-  session({
-    secret: "dogs",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: true },
-  })
-);
 
 app.use(logger("dev"));
 app.use(cookieParser());
