@@ -57,6 +57,22 @@ const strategy = new JwtStrategy(jwtOptions, (jwtPayload, done) => {
     });
 });
 
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async function (id, done) {
+  try {
+    const user = await User.findById(id);
+    console.log("deserialize");
+    console.log(user);
+    console.log(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});
+
 passport.use(strategy);
 app.use(passport.initialize());
 
