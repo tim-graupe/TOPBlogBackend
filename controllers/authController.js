@@ -79,7 +79,7 @@ exports.login_post = (req, res, next) => {
         );
 
         // Send the token in the response
-        res.cookie(user, user);
+        res.cookie(user, json({ user }));
         return res.json({ token, user });
       });
     })
