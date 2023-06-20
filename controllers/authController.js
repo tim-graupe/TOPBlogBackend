@@ -87,3 +87,12 @@ exports.login_post = (req, res, next) => {
       res.status(500).json({ message: "Internal Server Error." });
     });
 };
+
+exports.logout_post("/log_out", (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
