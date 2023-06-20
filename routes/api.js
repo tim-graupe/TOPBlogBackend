@@ -19,6 +19,8 @@ router.get("/log-in", passport.authenticate("jwt"), (req, res) => {
   // This route is now protected, and `req.user` will contain the authenticated user object.
   res.json(req.user);
 });
+
+router.post("/log_out", auth_controller.logout_post);
 //new entry
 router.get("/new_entry", (req, res) => {
   return res.send("New entry");
