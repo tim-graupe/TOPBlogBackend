@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 //cors
 const corsOptions = {
   origin: [
-    "http://localhost:3000, https://topblogbackend-production.up.railway.app/entries, https://topblogbackend-production.up.railway.app/, https://topblogbackend-production.up.railway.app/log-in",
+    "http://localhost:3000, https://topblogbackend-production.up.railway.app/entries, https://topblogbackend-production.up.railway.app/, https://topblogbackend-production.up.railway.app/log_in",
   ],
   optionSuccessStatus: 200,
 };
@@ -76,7 +76,7 @@ app.use("/", router);
 app.use("/entries", router);
 app.use("/new_entry", router);
 app.use("/sign_up", router);
-app.use("/log-in", router);
+app.use("/log_in", router);
 
 app.post("/sign_up", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });

@@ -13,8 +13,8 @@ router.get("/", passport.authenticate("jwt"), (req, res) => {
 });
 
 //login
-router.post("/log-in", cors(), auth_controller.login_post);
-router.get("/log-in", passport.authenticate("jwt"), (req, res) => {
+router.post("/log_in", cors(), auth_controller.login_post);
+router.get("/log_in", passport.authenticate("jwt"), (req, res) => {
   // This route is now protected, and `req.user` will contain the authenticated user object.
   res.json(req.user);
 });
