@@ -89,11 +89,23 @@ app.put("/entries/:id", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
 });
 
-app.use(function (req, res, next) {
-  res.locals.currentUser = req.user;
-  console.log(req.user);
-  console.log(res.locals.currentUser);
-  next();
+// app.use(function (req, res, next) {
+//   res.locals.currentUser = req.user;
+//   console.log(req.user);
+//   console.log(res.locals.currentUser);
+//   next();
+// });
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async function (id, done) {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
 });
 
 // catch 404 and forward to error handler
