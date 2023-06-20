@@ -98,7 +98,7 @@ app.use("/entries", router);
 app.use("/new_entry", router);
 app.use("/sign_up", router);
 app.use("/log_in", router);
-
+app.use("/log_out", router);
 app.post("/sign_up", cors(), function (req, res, next) {
   res.json({ msg: "cors enabled, for all origins!" });
 });
