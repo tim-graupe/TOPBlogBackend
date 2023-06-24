@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 const { DateTime } = require("luxon");
 
 const ReplySchema = new Schema({
-  user: { type: String, required: false, maxLength: 24 },
+  user: { type: String, required: false, minLength: 1, maxLength: 24 },
   content: {
     type: String,
     required: true,
-    minLength: 1,
+    minLength: 2,
     maxLength: 2000,
   },
 });
